@@ -18,6 +18,7 @@ import {
   SiRedux,
   SiGreensock,
   SiReactquery,
+  SiVite, // ⭐ added vite
 } from "react-icons/si";
 
 const techItems: {
@@ -60,6 +61,9 @@ const techItems: {
     Icon: SiReactquery,
     color: "#FF4154",
   },
+
+  // ⭐ Added Vite
+  { id: "vite", label: "Vite", Icon: SiVite, color: "#646CFF" },
 ];
 
 export default function TechGrid() {
@@ -68,16 +72,13 @@ export default function TechGrid() {
   useEffect(() => {
     const cards = cardsRef.current.filter(Boolean);
 
-    // Set initial state - all cards start above viewport
     gsap.set(cards, {
       y: -200,
       opacity: 0,
       rotation: () => gsap.utils.random(-8, 8),
     });
 
-    // Listen for splash screen completion
     const handleSplashComplete = () => {
-      // Animate each card dropping with stagger
       gsap.to(cards, {
         y: 0,
         opacity: 1,
@@ -97,6 +98,9 @@ export default function TechGrid() {
 
   return (
     <div className="p-1">
+      {/* ⭐ Added heading (NO styling change) */}
+      <h1>Tech Stack :</h1>
+
       <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 ">
         {techItems.map(({ id, label, Icon, color, border }, i) => (
           <div
@@ -104,7 +108,7 @@ export default function TechGrid() {
             ref={(el) => {
               cardsRef.current[i] = el;
             }}
-            className="flex items-center gap-4 rounded-md shadow-sm cursor-pointer transition-transform duration-300 hover:scale-110"
+            className="flex items-center gap-4 rounded-md shadow-sm group-hover:scale-125 pointer"
             style={{
               background: color,
               border:
@@ -114,12 +118,12 @@ export default function TechGrid() {
                   : undefined),
             }}
           >
-            <div className="w-10 h-10  flex items-center justify-center bg-white/20 rounded">
+            <div className="w-10 h-10 flex items-center justify-center bg-white/20 rounded">
               <Icon size={28} color="#fff" />
             </div>
 
             <span
-              className="font-semibold "
+              className="font-semibold"
               style={{
                 color: ["#F7DF1E", "#61DAFB", "#FFFCE1"].includes(color)
                   ? "#111"

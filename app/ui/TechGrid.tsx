@@ -2,23 +2,24 @@
 
 "use client";
 
-import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import React, { useRef } from "react";
 
 // react-icons
+import { useGSAP } from "@gsap/react";
 import {
-  SiNextdotjs,
-  SiTypescript,
-  SiJavascript,
-  SiHtml5,
-  SiReact,
-  SiTailwindcss,
   SiFramer,
-  SiSupabase,
-  SiRedux,
   SiGreensock,
+  SiHtml5,
+  SiJavascript,
+  SiNextdotjs,
+  SiReact,
   SiReactquery,
-  SiVite, // ⭐ added vite
+  SiRedux,
+  SiSupabase,
+  SiTailwindcss,
+  SiTypescript,
+  SiVite,
 } from "react-icons/si";
 
 const techItems: {
@@ -68,9 +69,16 @@ const techItems: {
 
 export default function TechGrid() {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     const cards = cardsRef.current.filter(Boolean);
+
+    // initial state for heading
+    gsap.set(headingRef.current, {
+      y: -100,
+      opacity: 0,
+    });
 
     gsap.set(cards, {
       y: -200,
@@ -79,6 +87,12 @@ export default function TechGrid() {
     });
 
     const handleSplashComplete = () => {
+      gsap.to(headingRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "bounce.out",
+      });
       gsap.to(cards, {
         y: 0,
         opacity: 1,
@@ -98,9 +112,9 @@ export default function TechGrid() {
 
   return (
     <div className="p-1">
-      {/* ⭐ Added heading (NO styling change) */}
-      <h1>Tech Stack :</h1>
-
+      <h1 ref={headingRef} className="text-center pb-2.5">
+        Tech Stack :
+      </h1>
       <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 ">
         {techItems.map(({ id, label, Icon, color, border }, i) => (
           <div

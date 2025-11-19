@@ -1,0 +1,136 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+"use client";
+
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+// react-icons
+import {
+  SiNextdotjs,
+  SiTypescript,
+  SiJavascript,
+  SiHtml5,
+  SiReact,
+  SiTailwindcss,
+  SiFramer,
+  SiSupabase,
+  SiRedux,
+  SiGreensock,
+  SiReactquery,
+} from "react-icons/si";
+
+const techItems: {
+  id: string;
+  label: string;
+  Icon: React.ComponentType<any>;
+  color: string;
+  border?: string;
+}[] = [
+  {
+    id: "next",
+    label: "Next.js",
+    Icon: SiNextdotjs,
+    color: "#000000",
+    border: "1px solid #666",
+  },
+  { id: "ts", label: "TypeScript", Icon: SiTypescript, color: "#3178C6" },
+  { id: "js", label: "JavaScript", Icon: SiJavascript, color: "#F7DF1E" },
+  { id: "html", label: "HTML5", Icon: SiHtml5, color: "#E34C26" },
+  { id: "react", label: "React", Icon: SiReact, color: "#61DAFB" },
+  {
+    id: "tailwind",
+    label: "Tailwind CSS",
+    Icon: SiTailwindcss,
+    color: "#06B6D4",
+  },
+  {
+    id: "framer",
+    label: "Framer",
+    Icon: SiFramer,
+    color: "#000000",
+    border: "1px solid #666",
+  },
+  { id: "redux", label: "Redux Toolkit", Icon: SiRedux, color: "#764ABC" },
+  { id: "gsap", label: "GSAP", Icon: SiGreensock, color: "#88CE02" },
+  { id: "supabase", label: "Supabase", Icon: SiSupabase, color: "#3ECF8E" },
+  {
+    id: "reactquery",
+    label: "React Query",
+    Icon: SiReactquery,
+    color: "#FF4154",
+  },
+];
+
+export default function TechGrid() {
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const cards = cardsRef.current.filter(Boolean);
+
+    // Set initial state - all cards start above viewport
+    gsap.set(cards, {
+      y: -200,
+      opacity: 0,
+      rotation: () => gsap.utils.random(-8, 8),
+    });
+
+    // Listen for splash screen completion
+    const handleSplashComplete = () => {
+      // Animate each card dropping with stagger
+      gsap.to(cards, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "bounce.out",
+        delay: 0.3,
+      });
+    };
+
+    window.addEventListener("splashComplete", handleSplashComplete);
+
+    return () => {
+      window.removeEventListener("splashComplete", handleSplashComplete);
+    };
+  }, []);
+
+  return (
+    <div className="p-1">
+      <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 ">
+        {techItems.map(({ id, label, Icon, color, border }, i) => (
+          <div
+            key={id}
+            ref={(el) => {
+              cardsRef.current[i] = el;
+            }}
+            className="flex items-center gap-4 rounded-md shadow-sm cursor-pointer transition-transform duration-300 hover:scale-110"
+            style={{
+              background: color,
+              border:
+                border ||
+                (color === "#F7DF1E"
+                  ? "1px solid rgba(0,0,0,0.25)"
+                  : undefined),
+            }}
+          >
+            <div className="w-10 h-10  flex items-center justify-center bg-white/20 rounded">
+              <Icon size={28} color="#fff" />
+            </div>
+
+            <span
+              className="font-semibold "
+              style={{
+                color: ["#F7DF1E", "#61DAFB", "#FFFCE1"].includes(color)
+                  ? "#111"
+                  : "#fff",
+              }}
+            >
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

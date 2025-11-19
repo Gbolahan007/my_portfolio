@@ -26,7 +26,7 @@ export default function Portfolio() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-between py-8 px-4 overflow-hidden">
+    <div className=" bg-black text-white flex flex-col items-center justify-between py-6 px-4 overflow-hidden">
       {/* NAVIGATION */}
       <Navbar onMenuOpen={() => setMobileMenuOpen(true)} />
 

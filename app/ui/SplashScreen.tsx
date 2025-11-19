@@ -33,7 +33,10 @@ export default function SplashScreen() {
             y: "-100%",
             duration: 1.2,
             ease: "power3.inOut",
-            onComplete: () => setHidden(true),
+            onComplete: () => {
+              setHidden(true);
+              window.dispatchEvent(new CustomEvent("splashComplete"));
+            },
           });
         },
       });

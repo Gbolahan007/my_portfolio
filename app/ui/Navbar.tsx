@@ -61,14 +61,14 @@ export default function Navbar({ onMenuOpen }: NavbarProps) {
   };
 
   return (
-    <nav ref={navRef} className="w-full max-w-7xl flex justify-center mb-8">
+    <nav ref={navRef} className="w-full max-w-7xl mt-5 flex justify-center">
       <div className="flex items-center justify-between w-full md:justify-center md:w-auto gap-8 bg-zinc-900 rounded-sm px-8 py-4 border border-zinc-800">
         <div className="md:hidden text-zinc-400 text-xl font-mono">
           &lt;/&gt;
         </div>
 
         {/* DESKTOP NAV */}
-        <div className="hidden md:flex items-center text-xl gap-8">
+        <div className="hidden md:flex items-center text-2xl gap-8">
           {["Projects", "Services", "About", "Contact"].map((item) => (
             <div key={item} className="flex items-center gap-2">
               <a

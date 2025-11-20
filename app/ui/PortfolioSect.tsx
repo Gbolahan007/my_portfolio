@@ -1,7 +1,6 @@
-// Updated PortfolioSect component with mobile animations
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { FiExternalLink } from "react-icons/fi";
 import { FaGithub } from "react-icons/fa";
@@ -27,8 +26,8 @@ const PortfolioSect: React.FC = () => {
   const mobileContainerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement[]>([]);
   const numberRef = useRef<HTMLHeadingElement>(null);
-  const desktopDescRef = useRef<HTMLParagraphElement>(null);
-  const desktopStackRef = useRef<HTMLDivElement>(null);
+
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const portfolioItems: PortfolioItem[] = [
     {
@@ -107,8 +106,9 @@ const PortfolioSect: React.FC = () => {
         const imageContainer = item.querySelector(".mobile-image");
         const description = item.querySelector(".mobile-description");
         const techStack = item.querySelector(".mobile-tech-stack");
+        const links = item.querySelector(".mobile-links");
 
-        gsap.set([number, imageContainer, description, techStack], {
+        gsap.set([number, imageContainer, description, techStack, links], {
           autoAlpha: 0,
           y: 60,
         });
@@ -122,40 +122,25 @@ const PortfolioSect: React.FC = () => {
           },
         });
 
-        tl.to(number, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.5,
-          ease: "power2.out",
-        })
+        tl.to(number, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" })
           .to(
             imageContainer,
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.6,
-              ease: "power2.out",
-            },
+            { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
             "-=0.3"
           )
           .to(
             description,
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.5,
-              ease: "power2.out",
-            },
+            { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
             "-=0.4"
           )
           .to(
             techStack,
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.5,
-              ease: "power2.out",
-            },
+            { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            "-=0.3"
+          )
+          .to(
+            links,
+            { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
             "-=0.3"
           );
       });
@@ -163,30 +148,17 @@ const PortfolioSect: React.FC = () => {
     { scope: mobileContainerRef, dependencies: [] }
   );
 
-  // DESKTOP GSAP
+  // DESKTOP ANIMATIONS
   useGSAP(
     () => {
       if (window.innerWidth < 640) return;
 
       const images = imageRef.current;
       const total = images.length;
-
       if (!images[0]) return;
 
-      // TEXT ELEMENT SETUP
-      const desc = desktopDescRef.current;
-      const stack = desktopStackRef.current;
-      const mobileDescs = gsap.utils.toArray<HTMLElement>(".project-desc");
-
-      gsap.set([desc, stack, mobileDescs], { autoAlpha: 0, y: 40 });
-
-      // Initial image positions
       images.forEach((img, i) => {
-        gsap.set(img, {
-          y: i === 0 ? "0%" : window.innerHeight,
-          scale: 1,
-          rotation: 0,
-        });
+        gsap.set(img, { y: i === 0 ? "0%" : window.innerHeight, scale: 1 });
       });
 
       const tl = gsap.timeline({
@@ -205,17 +177,8 @@ const PortfolioSect: React.FC = () => {
           { scale: 0.7, rotation: 5, duration: 1, ease: "none" },
           i
         ).to(images[i + 1], { y: "0%", duration: 1, ease: "none" }, i);
-
-        // TEXT SYNCED ANIMATION
-        tl.fromTo(
-          [desc, stack, mobileDescs],
-          { autoAlpha: 0, y: 40 },
-          { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" },
-          i + 0.2
-        );
       }
 
-      // Update text on scroll
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top top",
@@ -223,25 +186,7 @@ const PortfolioSect: React.FC = () => {
         scrub: 1.2,
         onUpdate: (self) => {
           const index = Math.min(Math.floor(self.progress * total), total - 1);
-
-          if (numberRef.current) {
-            numberRef.current.textContent =
-              String(index + 1).padStart(2, "0") + ".";
-          }
-
-          if (desktopDescRef.current && window.innerWidth >= 1024) {
-            desktopDescRef.current.textContent =
-              portfolioItems[index].description;
-          }
-
-          if (desktopStackRef.current && window.innerWidth >= 1024) {
-            desktopStackRef.current.innerHTML = portfolioItems[index].techStack
-              .map(
-                (tech) =>
-                  `<span class="px-3 py-1 bg-white/10 rounded-full border border-purple-900 text-sm text-white/80">${tech}</span>`
-              )
-              .join("");
-          }
+          setActiveIndex(index);
         },
       });
     },
@@ -250,10 +195,10 @@ const PortfolioSect: React.FC = () => {
 
   return (
     <>
-      {/* MOBILE VERSION - Animated Scroll */}
+      {/* MOBILE VERSION */}
       <div
         ref={mobileContainerRef}
-        className="block sm:hidden min-h-screen py-12 px-4"
+        className="block sm:hidden min-h-screen py-12"
       >
         <div className="max-w-7xl mx-auto space-y-16">
           {portfolioItems.map((item, index) => (
@@ -270,29 +215,6 @@ const PortfolioSect: React.FC = () => {
                   className="object-cover"
                   draggable={false}
                 />
-
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/90 via-black/50 to-transparent">
-                  <div className="flex items-center gap-4">
-                    <a
-                      href={item.liveLink}
-                      target="_blank"
-                      className="flex items-center gap-2 text-white/80 hover:text-white"
-                    >
-                      <span className="font-semibold tracking-wide text-sm">
-                        LINK UP
-                      </span>
-                      <FiExternalLink size={16} />
-                    </a>
-
-                    <a
-                      href={item.githubLink}
-                      target="_blank"
-                      className="text-white/80 hover:text-white"
-                    >
-                      <FaGithub size={22} />
-                    </a>
-                  </div>
-                </div>
               </div>
 
               <p className="mobile-description text-white/70 text-base leading-relaxed">
@@ -303,116 +225,114 @@ const PortfolioSect: React.FC = () => {
                 {item.techStack.map((tech, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 bg-white/10 rounded-full border border-purple-900 text-sm text-white/80"
+                    className="px-3 py-1 bg-white/10 rounded-full text-sm text-white/80"
                   >
                     {tech}
                   </span>
                 ))}
+              </div>
+
+              <div className="mobile-links flex items-center gap-4">
+                <a
+                  href={item.liveLink}
+                  target="_blank"
+                  className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+                >
+                  <span className="font-semibold tracking-wide text-sm">
+                    LINK UP
+                  </span>
+                  <FiExternalLink size={16} />
+                </a>
+                <a
+                  href={item.githubLink}
+                  target="_blank"
+                  className="text-white/80 hover:text-white transition-colors"
+                >
+                  <FaGithub size={22} />
+                </a>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* DESKTOP VERSION - Stacked Animation */}
+      {/* DESKTOP VERSION */}
       <div
-        className="hidden sm:block min-h-screen py-12 md:py-20 px-4"
         ref={containerRef}
+        className="hidden sm:block min-h-screen py-12 md:py-20 px-4"
       >
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
-            <div className="lg:w-1/3 shrink-0">
-              <h2
-                ref={numberRef}
-                className="text-[80px] sm:text-[120px] md:text-[150px] lg:text-[200px] font-bold text-white leading-none"
-              >
-                01.
-              </h2>
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-4 md:gap-8">
+          {/* LEFT PANEL */}
+          <div className="lg:w-1/3 shrink-0">
+            <h2
+              ref={numberRef}
+              className="text-[80px] sm:text-[120px] md:text-[150px] lg:text-[200px] font-bold text-white leading-none"
+            >
+              {String(activeIndex + 1).padStart(2, "0")}.
+            </h2>
 
-              <p
-                ref={desktopDescRef}
-                className="project-desc hidden lg:block text-white/70 text-lg leading-relaxed max-w-sm mt-6"
-              >
-                {portfolioItems[0].description}
-              </p>
+            <p className="project-desc hidden lg:block text-white/70 text-lg leading-relaxed max-w-sm mt-6">
+              {portfolioItems[activeIndex].description}
+            </p>
 
-              <div
-                ref={desktopStackRef}
-                className="project-desc hidden lg:flex flex-wrap gap-2 mt-4 max-w-sm"
-              >
-                {portfolioItems[0].techStack.map((tech, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1  rounded-full text-sm text-white/80"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+            <div className="project-desc hidden lg:flex flex-wrap gap-2 mt-4 max-w-sm">
+              {portfolioItems[activeIndex].techStack.map((tech, i) => (
+                <span
+                  key={i}
+                  className="px-3 py-1 bg-white/10 rounded-full text-sm text-white/80"
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
 
-            <div className="lg:w-2/3 flex flex-col items-center justify-center ">
-              <div className="w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] relative max-w-3xl">
-                {portfolioItems.map((item, i) => (
-                  <div
-                    key={item.id}
-                    ref={(el) => {
-                      if (el) imageRef.current[i] = el;
-                    }}
-                    className="absolute inset-0 w-full h-full"
-                  >
-                    <div className="relative w-full h-full rounded-lg overflow-hidden shadow-2xl">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                        draggable={false}
-                      />
+            <div className="project-desc hidden lg:flex items-center gap-4 mt-6">
+              <a
+                href={portfolioItems[activeIndex].liveLink}
+                target="_blank"
+                className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+              >
+                <span className="font-semibold tracking-wide text-sm">
+                  LINK UP
+                </span>
+                <FiExternalLink size={16} />
+              </a>
+              <a
+                href={portfolioItems[activeIndex].githubLink}
+                target="_blank"
+                className="text-white/80 hover:text-white transition-colors"
+              >
+                <FaGithub size={22} />
+              </a>
+            </div>
+          </div>
 
-                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/90 via-black/50 to-transparent">
-                        <div className="flex items-center gap-4">
-                          <a
-                            href={item.liveLink}
-                            target="_blank"
-                            className="flex items-center gap-2 text-white/80 hover:text-white"
-                          >
-                            <span className="font-semibold tracking-wide text-sm">
-                              LINK UP
-                            </span>
-                            <FiExternalLink size={16} />
-                          </a>
+          {/* RIGHT PANEL */}
+          <div className="lg:w-2/3 flex flex-col items-center justify-center">
+            <div className="w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] relative max-w-3xl">
+              {portfolioItems.map((item, i) => (
+                <div
+                  key={item.id}
+                  ref={(el) => {
+                    if (el) imageRef.current[i] = el;
+                  }}
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <div className="relative w-full h-full rounded-lg overflow-hidden shadow-2xl">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                      draggable={false}
+                    />
 
-                          <a
-                            href={item.githubLink}
-                            target="_blank"
-                            className="text-white/80 hover:text-white"
-                          >
-                            <FaGithub size={22} />
-                          </a>
-                        </div>
-                      </div>
-
-                      <p className="project-desc lg:hidden absolute bottom-20 left-4 right-4 text-white/90 text-sm backdrop-blur-md bg-black/40 px-3 py-2 rounded-lg">
-                        {item.description}
-                      </p>
-                    </div>
+                    <p className="project-desc lg:hidden absolute bottom-4 left-4 right-4 text-white/90 text-sm backdrop-blur-md bg-black/40 px-3 py-2 rounded-lg">
+                      {item.description}
+                    </p>
                   </div>
-                ))}
-              </div>
-
-              <div className="lg:hidden w-full max-w-3xl mt-4 px-4">
-                <div className="flex flex-wrap gap-2">
-                  {portfolioItems[0].techStack.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 bg-white/10 rounded-full text-sm text-white/80"
-                    >
-                      {tech}
-                    </span>
-                  ))}
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

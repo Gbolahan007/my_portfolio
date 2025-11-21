@@ -32,33 +32,33 @@ const PortfolioSect: React.FC = () => {
   const portfolioItems: PortfolioItem[] = [
     {
       id: 1,
-      image: "/portfolio.PNG",
+      image: "/urbfit.PNG",
       title: "e-commerce",
       description:
         "A modern e-commerce app with product pages, animations and clean UI.",
-      liveLink: "https://example.com",
-      githubLink: "https://github.com/project1",
+      liveLink: "https://urbfit.vercel.app/",
+      githubLink: "https://github.com/Gbolahan007/urbfit-e-commrce",
       techStack: ["React", "Next.js", "Tailwind CSS", "Stripe"],
     },
     {
       id: 2,
-      image: "/portfolio-1.png",
+      image: "/inventory.png",
       title: "Inventory management",
       description:
         "A complete inventory tracking system with live stock updates.",
-      liveLink: "https://example.com",
-      githubLink: "https://github.com/project2",
+      liveLink: "https://inventory-management-ut4g.vercel.app/dashboard",
+      githubLink: "https://github.com/Gbolahan007/Inventory-Management",
       techStack: ["React", "Node.js", "MongoDB", "Express"],
     },
     {
       id: 3,
-      image: "/portfolio-2.PNG",
+      image: "/sisicaro.PNG",
       title: "Sisicaro Marketing agency",
       description:
         "A sleek agency landing page with smooth animations and branding.",
-      liveLink: "https://example.com",
-      githubLink: "https://github.com/project3",
-      techStack: ["Next.js", "GSAP", "Framer Motion", "TypeScript"],
+      liveLink: "https://sisicaro.com",
+      githubLink: "https://github.com/Gbolahan007/sisi-caro",
+      techStack: ["Next.js", "GSAP", "Framer Motion", "Javascript"],
     },
     {
       id: 4,
@@ -66,8 +66,8 @@ const PortfolioSect: React.FC = () => {
       title: "Eni's restaurant Menu",
       description:
         "A digital restaurant menu with categories and mobile-first design.",
-      liveLink: "https://example.com",
-      githubLink: "https://github.com/project4",
+      liveLink: "https://eni-s-restaurant-lounge.vercel.app/",
+      githubLink: "https://github.com/Gbolahan007/Eni-s-Restaurant-Lounge-",
       techStack: ["React", "Firebase", "Tailwind CSS"],
     },
   ];
@@ -318,7 +318,7 @@ const PortfolioSect: React.FC = () => {
                   }}
                   className="absolute inset-0 w-full h-full"
                 >
-                  <div className="relative w-full h-full rounded-lg overflow-hidden shadow-2xl">
+                  <div className="relative w-full h-full aspect-video rounded-lg overflow-hidden shadow-2xl">
                     <Image
                       src={item.image}
                       alt={item.title}

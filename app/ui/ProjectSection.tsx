@@ -111,7 +111,7 @@ const ProjectSection: React.FC = () => {
     <div className="w-full bg-neutral-900">
       <div
         ref={sectionRef}
-        className="bg-neutral-800 px-6 md:px-12 lg:px-16 py-24 md:py-32 relative"
+        className="bg-neutral-800 px-6 md:px-12 lg:px-16 py-24 relative "
       >
         <div className="max-w-7xl mx-auto">
           {/* Title */}

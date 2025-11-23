@@ -28,11 +28,13 @@ const PortfolioSect: React.FC = () => {
   const numberRef = useRef<HTMLHeadingElement>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
 
   const portfolioItems: PortfolioItem[] = [
     {
       id: 1,
-      image: "/urbfit.PNG",
+      image: "/urbfit.jpg",
       title: "e-commerce",
       description:
         "A modern e-commerce app with product pages, animations and clean UI.",
@@ -62,7 +64,7 @@ const PortfolioSect: React.FC = () => {
     },
     {
       id: 4,
-      image: "/portfolio-3.png",
+      image: "/ennis.png",
       title: "Eni's restaurant Menu",
       description:
         "A digital restaurant menu with categories and mobile-first design.",
@@ -71,6 +73,14 @@ const PortfolioSect: React.FC = () => {
       techStack: ["React", "Firebase", "Tailwind CSS"],
     },
   ];
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
   // LENIS SETUP
   useEffect(() => {
@@ -259,7 +269,7 @@ const PortfolioSect: React.FC = () => {
       {/* DESKTOP VERSION */}
       <div
         ref={containerRef}
-        className="hidden sm:block min-h-screen py-12 md:py-20 px-4"
+        className="hidden sm:block min-h-screen py-12 md:py-16  px-4"
       >
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-4 md:gap-8">
           {/* LEFT PANEL */}
@@ -317,6 +327,9 @@ const PortfolioSect: React.FC = () => {
                     if (el) imageRef.current[i] = el;
                   }}
                   className="absolute inset-0 w-full h-full"
+                  onMouseMove={handleMouseMove}
+                  onMouseEnter={() => setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
                 >
                   <div className="relative w-full h-full aspect-video rounded-lg overflow-hidden shadow-2xl">
                     <Image
@@ -330,6 +343,22 @@ const PortfolioSect: React.FC = () => {
                     <p className="project-desc lg:hidden absolute bottom-4 left-4 right-4 text-white/90 text-sm backdrop-blur-md bg-black/40 px-3 py-2 rounded-lg">
                       {item.description}
                     </p>
+
+                    {isHovering && i === activeIndex && (
+                      <a
+                        href={item.liveLink}
+                        target="_blank"
+                        className="fixed cursor-pointer z-50 flex items-center gap-2 px-4 py-2 bg-white text-black font-semibold text-sm shadow-lg"
+                        style={{
+                          left: `${mousePos.x}px`,
+                          top: `${mousePos.y}px`,
+                          transform: "translate(-50%, -50%)",
+                        }}
+                      >
+                        <span>VIEW</span>
+                        <FiExternalLink size={16} />
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}

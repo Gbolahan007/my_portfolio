@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -7,9 +9,14 @@ import { useGSAP } from "@gsap/react";
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onNavClick: (section: string) => void;
 }
 
-export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+export default function MobileMenu({
+  isOpen,
+  onClose,
+  onNavClick,
+}: MobileMenuProps) {
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
 
   useGSAP(
@@ -81,6 +88,15 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     });
   };
 
+  const handleMenuItemClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    section: string
+  ) => {
+    e.preventDefault();
+    onNavClick(section);
+    handleClose();
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -102,9 +118,9 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         {["Projects", "Services", "About", "Contact"].map((item) => (
           <a
             key={item}
-            href={`#${item.toLowerCase()}`}
+            href="#"
             className="text-zinc-300 text-3xl mb-8"
-            onClick={handleClose}
+            onClick={(e) => handleMenuItemClick(e, item.toLowerCase())}
           >
             {item}
           </a>

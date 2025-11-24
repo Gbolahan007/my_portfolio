@@ -1,14 +1,17 @@
 "use client";
 
+import type React from "react";
+
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 interface NavbarProps {
   onMenuOpen: () => void;
+  onNavClick: (section: string) => void;
 }
 
-export default function Navbar({ onMenuOpen }: NavbarProps) {
+export default function Navbar({ onMenuOpen, onNavClick }: NavbarProps) {
   const navRef = useRef(null);
 
   useGSAP(() => {
@@ -60,6 +63,21 @@ export default function Navbar({ onMenuOpen }: NavbarProps) {
     });
   };
 
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    section: string
+  ) => {
+    e.preventDefault();
+    onNavClick(section);
+  };
+
+  const navItems = [
+    { label: "Projects", id: "projects" },
+    { label: "Services", id: "services" },
+    { label: "About", id: "about" },
+    { label: "Contact", id: "contact" },
+  ];
+
   return (
     <nav ref={navRef} className="w-full max-w-7xl mt-5 flex justify-center">
       <div className="flex items-center justify-between w-full md:justify-center md:w-auto gap-8 bg-zinc-900 rounded-sm px-8 py-4 border border-zinc-800">
@@ -69,15 +87,18 @@ export default function Navbar({ onMenuOpen }: NavbarProps) {
 
         {/* DESKTOP NAV */}
         <div className="hidden md:flex items-center text-2xl gap-8">
-          {["Projects", "Services", "About", "Contact"].map((item) => (
-            <div key={item} className="flex items-center gap-2">
+          {navItems.map((item, index) => (
+            <div key={item.id} className="flex items-center gap-2">
               <a
-                href={`#${item.toLowerCase()}`}
+                href="#"
                 className="relative overflow-hidden inline-block cursor-pointer"
                 onMouseEnter={handleNavHover}
                 onMouseLeave={handleNavLeave}
+                onClick={(e) => handleNavClick(e, item.id)}
               >
-                <span className="text-normal block text-zinc-400">{item}</span>
+                <span className="text-normal block text-zinc-400">
+                  {item.label}
+                </span>
                 <span
                   className="text-overlay absolute top-0 left-0 translate-y-full"
                   style={{
@@ -85,11 +106,13 @@ export default function Navbar({ onMenuOpen }: NavbarProps) {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  {item}
+                  {item.label}
                 </span>
               </a>
 
-              {item !== "Contact" && <span className="text-zinc-600">|</span>}
+              {index !== navItems.length - 1 && (
+                <span className="text-zinc-600">|</span>
+              )}
             </div>
           ))}
         </div>

@@ -8,6 +8,7 @@ import MobileMenu from "./ui/MobileMenu";
 import HeroSection from "./ui/HeroSection";
 import ProjectSection from "./ui/ProjectSection";
 import ExperienceSection from "./ui/ExperienceSection ";
+import ContactForm from "./ui/ContactForm";
 
 export default function Portfolio() {
   const nameRef = useRef(null);
@@ -28,7 +29,7 @@ export default function Portfolio() {
   }, []);
 
   return (
-    <div className=" bg-[#10120f] text-white flex flex-col items-center justify-between py-6 overflow-hidden">
+    <div className=" bg-[#10120f] text-white overflow-hidden ">
       {/* NAVIGATION */}
       <Navbar onMenuOpen={() => setMobileMenuOpen(true)} />
 
@@ -43,6 +44,7 @@ export default function Portfolio() {
 
       <ProjectSection />
       <ExperienceSection />
+      <ContactForm />
     </div>
   );
 }

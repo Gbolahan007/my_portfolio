@@ -33,7 +33,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SplashScreen />
-        <div className={`${bebas.className}  bg-black`}>
+        <div className={`${bebas.className} `}>
           <main>{children}</main>
         </div>
       </body>

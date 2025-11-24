@@ -12,41 +12,42 @@ export interface Experience {
   dates: string;
 }
 
+const experiences: Experience[] = [
+  {
+    company: "Prishusoft",
+    role: "Software Engineer",
+    experience:
+      "Developing and maintaining web applications using the PEAN stack. Collaborating with cross-functional teams to deliver high-quality software solutions.",
+    dates: "July 2024 - Present",
+  },
+  {
+    company: "Prishusoft",
+    role: "MERN Stack Developer Intern",
+    experience:
+      "Developed multiple minor projects and one major project. Gained hands-on experience in building full-stack web applications.",
+    dates: "Jan 2024 - June 2024",
+  },
+  {
+    company: "Cantech Networks Private Limited",
+    role: "Cloud Intern",
+    experience:
+      "Worked on cloud infrastructure projects and gained experience with cloud technologies and deployment strategies.",
+    dates: "Sep 2023 - Dec 2023",
+  },
+  {
+    company: "Tech Solutions Ltd",
+    role: "Frontend Developer Intern",
+    experience:
+      "Built responsive web interfaces and collaborated with design team to implement user-friendly features.",
+    dates: "May 2023 - Aug 2023",
+  },
+];
+
 const ExperienceSection: FC = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const experienceRefs = useRef<Array<HTMLDivElement | null>>([]);
-
-  const experiences: Experience[] = [
-    {
-      company: "Prishusoft",
-      role: "Software Engineer",
-      experience:
-        "Developing and maintaining web applications using the PEAN stack. Collaborating with cross-functional teams to deliver high-quality software solutions.",
-      dates: "July 2024 - Present",
-    },
-    {
-      company: "Prishusoft",
-      role: "MERN Stack Developer Intern",
-      experience:
-        "Developed multiple minor projects and one major project. Gained hands-on experience in building full-stack web applications.",
-      dates: "Jan 2024 - June 2024",
-    },
-    {
-      company: "Cantech Networks Private Limited",
-      role: "Cloud Intern",
-      experience:
-        "Worked on cloud infrastructure projects and gained experience with cloud technologies and deployment strategies.",
-      dates: "Sep 2023 - Dec 2023",
-    },
-    {
-      company: "Tech Solutions Ltd",
-      role: "Frontend Developer Intern",
-      experience:
-        "Built responsive web interfaces and collaborated with design team to implement user-friendly features.",
-      dates: "May 2023 - Aug 2023",
-    },
-  ];
+  const mobileCardRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   // GSAP animations
   useEffect(() => {
@@ -64,7 +65,7 @@ const ExperienceSection: FC = () => {
         });
       }
 
-      // Each timeline item animation
+      // Desktop timeline item animation
       experienceRefs.current.forEach((item) => {
         if (!item) return;
 
@@ -134,6 +135,60 @@ const ExperienceSection: FC = () => {
               ease: "power2.out",
             },
             "-=0.3"
+          );
+      });
+
+      // Mobile card animations (text reveal similar to project section)
+      mobileCardRefs.current.forEach((card) => {
+        if (!card) return;
+
+        const companyEl = card.querySelector(
+          ".mobile-company-name"
+        ) as HTMLElement | null;
+        const roleEl = card.querySelector(".mobile-role") as HTMLElement | null;
+        const textEl = card.querySelector(
+          ".mobile-experience-text"
+        ) as HTMLElement | null;
+        const datesEl = card.querySelector(
+          ".mobile-dates"
+        ) as HTMLElement | null;
+
+        const mobileTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: "top 80%",
+            end: "top 30%",
+            toggleActions: "play none none reverse",
+          },
+        });
+
+        if (companyEl)
+          mobileTl.from(companyEl, {
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          });
+
+        if (roleEl)
+          mobileTl.from(
+            roleEl,
+            { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" },
+            "-=0.5"
+          );
+
+        if (textEl)
+          mobileTl.from(
+            textEl,
+            { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" },
+            "-=0.6"
+          );
+
+        if (datesEl)
+          mobileTl.from(
+            datesEl,
+            { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" },
+            "-=0.6"
           );
       });
     });
@@ -226,18 +281,23 @@ const ExperienceSection: FC = () => {
                     )}
                   </div>
 
-                  <div className="flex-1 pb-12">
-                    <h2 className="company-name text-3xl font-bold text-white mb-3">
+                  <div
+                    ref={(el) => {
+                      if (el) mobileCardRefs.current[index] = el;
+                    }}
+                    className="flex-1 pb-12"
+                  >
+                    <h2 className="mobile-company-name text-3xl font-bold text-white mb-3">
                       {exp.company}
                     </h2>
-                    <p className="role text-lg text-gray-300 mb-3">
+                    <p className="mobile-role text-lg text-gray-300 mb-3">
                       Role: {exp.role}
                     </p>
-                    <p className="experience-text text-sm text-gray-400 leading-relaxed mb-3">
+                    <p className="mobile-experience-text text-sm text-gray-400 leading-relaxed mb-3">
                       <span className="font-semibold">Experience:</span>{" "}
                       {exp.experience}
                     </p>
-                    <p className="dates text-base text-gray-500 font-medium">
+                    <p className="mobile-dates text-base text-gray-500 font-medium">
                       {exp.dates}
                     </p>
                   </div>

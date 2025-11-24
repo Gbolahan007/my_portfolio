@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { useFormStatus } from "react-dom";
+import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
+import { useFormStatus } from "react-dom";
 import { handleSubmit } from "../data/data-service";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -28,17 +29,18 @@ export default function ContactForm() {
   const headerRef = useRef<HTMLHeadingElement>(null);
   const subheaderRef = useRef<HTMLParagraphElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const formElementsRef = useRef<
-    Array<HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement>
-  >([]);
-  const contactInfoRef = useRef<Array<HTMLDivElement | HTMLAnchorElement>>([]);
+  const formElementsRef = useRef<Array<HTMLElement>>([]);
+  const contactInfoRef = useRef<Array<HTMLElement>>([]);
 
   // GSAP animation
-  useEffect(() => {
+  useGSAP(() => {
     const ctx = gsap.context(() => {
       gsap.set(
         [headerRef.current, subheaderRef.current, descriptionRef.current],
-        { autoAlpha: 0, y: 60 }
+        {
+          autoAlpha: 0,
+          y: 60,
+        }
       );
 
       gsap.set(formElementsRef.current, { autoAlpha: 0, y: 60 });
@@ -62,7 +64,7 @@ export default function ContactForm() {
         .to(
           subheaderRef.current,
           { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-          "-=0.4"
+          "+=0"
         )
         .to(
           descriptionRef.current,
@@ -74,7 +76,7 @@ export default function ContactForm() {
         tl.to(
           el,
           { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-          `-=${0.4 - i * 0.05}`
+          i === 0 ? "+=0.1" : `-=${0.2 + i * 0.05}`
         );
       });
 
@@ -82,7 +84,7 @@ export default function ContactForm() {
         tl.to(
           el,
           { autoAlpha: 1, x: 0, duration: 0.5, ease: "power2.out" },
-          `-=${0.6 - i * 0.1}`
+          i === 0 ? "+=0.1" : `-=${0.2 + i * 0.1}`
         );
       });
     }, containerRef);
@@ -93,15 +95,13 @@ export default function ContactForm() {
     };
   }, []);
 
-  const addToFormElements = (
-    el: HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement | null
-  ) => {
+  const addFormElement = (el: HTMLElement | null) => {
     if (el && !formElementsRef.current.includes(el)) {
       formElementsRef.current.push(el);
     }
   };
 
-  const addToContactInfo = (el: HTMLDivElement | HTMLAnchorElement | null) => {
+  const addContactInfo = (el: HTMLElement | null) => {
     if (el && !contactInfoRef.current.includes(el)) {
       contactInfoRef.current.push(el);
     }
@@ -113,7 +113,7 @@ export default function ContactForm() {
       className="min-h-screen w-full bg-[#E8E8E3] p-8 md:p-16"
     >
       <div className="w-full mx-auto">
-        {/* Header Section */}
+        {/* Header */}
         <div className="mb-12">
           <h1
             ref={headerRef}
@@ -139,7 +139,7 @@ export default function ContactForm() {
           {/* Contact Info */}
           <div className="order-1 md:order-2 flex flex-col space-y-8">
             <a
-              ref={addToContactInfo}
+              ref={addContactInfo}
               href="https://www.linkedin.com/in/yourprofile"
               target="_blank"
               rel="noopener noreferrer"
@@ -157,8 +157,7 @@ export default function ContactForm() {
               <span className="text-lg font-medium">LinkedIn</span>
             </a>
 
-            {/* Location */}
-            <div ref={addToContactInfo} className="flex items-center gap-4">
+            <div ref={addContactInfo} className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full border-2 border-black flex items-center justify-center">
                 <svg
                   className="w-6 h-6"
@@ -174,9 +173,8 @@ export default function ContactForm() {
               </div>
             </div>
 
-            {/* Phone */}
             <a
-              ref={addToContactInfo}
+              ref={addContactInfo}
               href="tel:08063480560"
               className="flex items-center gap-4 hover:opacity-70 transition-opacity"
             >
@@ -195,9 +193,8 @@ export default function ContactForm() {
               </div>
             </a>
 
-            {/* Email */}
             <a
-              ref={addToContactInfo}
+              ref={addContactInfo}
               href="mailto:lawalomogbolahan08@gmail.com"
               className="flex items-center gap-4 hover:opacity-70 transition-opacity"
             >
@@ -225,49 +222,52 @@ export default function ContactForm() {
             action={handleSubmit}
             className="order-2 md:order-1 space-y-6"
           >
-            <div ref={addToFormElements}>
+            <div>
               <label htmlFor="name" className="block mb-2 font-medium">
                 Name <span className="text-red-500">*</span>
               </label>
               <input
+                ref={addFormElement}
                 type="text"
                 id="name"
                 name="name"
                 required
                 placeholder="What's your name"
-                className="w-full px-4 py-3 bg-white/50 border-none rounded-none focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full px-4 py-3 bg-white/50 border-none focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
 
-            <div ref={addToFormElements}>
+            <div>
               <label htmlFor="email" className="block mb-2 font-medium">
                 Email <span className="text-red-500">*</span>
               </label>
               <input
+                ref={addFormElement}
                 type="email"
                 id="email"
                 name="email"
                 required
                 placeholder="What's your email"
-                className="w-full px-4 py-3 bg-white/50 border-none rounded-none focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full px-4 py-3 bg-white/50 border-none focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
 
-            <div ref={addToFormElements}>
+            <div>
               <label htmlFor="message" className="block mb-2 font-medium">
                 Message <span className="text-red-500">*</span>
               </label>
               <textarea
+                ref={addFormElement}
                 id="message"
                 name="message"
                 required
                 rows={4}
                 placeholder="Your message"
-                className="w-full px-4 py-3 bg-white/50 border-none rounded-none focus:outline-none focus:ring-2 focus:ring-black resize-none"
+                className="w-full px-4 py-3 bg-white/50 border-none focus:outline-none focus:ring-2 focus:ring-black resize-none"
               />
             </div>
 
-            <div ref={addToFormElements}>
+            <div ref={addFormElement}>
               <SubmitButton />
             </div>
           </form>

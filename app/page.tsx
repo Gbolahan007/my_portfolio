@@ -14,27 +14,13 @@ import ContactForm from "./ui/ContactForm";
 gsap.registerPlugin(ScrollToPlugin);
 
 export default function Portfolio() {
-  const nameRef = useRef(null);
-  const titleRef = useRef(null);
-  const descRef = useRef(null);
-  const avatarRef = useRef(null);
-
+  // Remove unused refs
   const projectsRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // HERO TEXT ANIMATION
-  useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-    tl.from(avatarRef.current, { scale: 0, opacity: 0, duration: 0.6 })
-      .from(nameRef.current, { y: 100, opacity: 0, duration: 1 }, "-=0.3")
-      .from(titleRef.current, { y: 100, opacity: 0, duration: 1 }, "-=0.7")
-      .from(descRef.current, { y: 50, opacity: 0, duration: 0.8 }, "-=0.5");
-  }, []);
 
   const handleNavClick = (section: string) => {
     let targetRef;
@@ -61,6 +47,7 @@ export default function Portfolio() {
         scrollTo: {
           y: targetRef.current,
           autoKill: true,
+          offsetY: 80, // Add offset for navbar height
         },
         duration: 1,
         ease: "power3.inOut",
@@ -88,19 +75,22 @@ export default function Portfolio() {
       {/* HERO CONTENT */}
       <HeroSection />
 
-      <div ref={projectsRef}>
+      {/* Add proper section wrappers with IDs */}
+      <section id="projects" ref={projectsRef}>
         <ProjectSection />
-      </div>
+      </section>
 
-      <div ref={servicesRef}>
+      <section id="services" ref={servicesRef}>
         <ExperienceSection />
-      </div>
+      </section>
 
-      <div ref={aboutRef}>{/* About section content can be added here */}</div>
+      <section id="about" ref={aboutRef}>
+        {/* About section content can be added here */}
+      </section>
 
-      <div ref={contactRef}>
+      <section id="contact" ref={contactRef}>
         <ContactForm />
-      </div>
+      </section>
     </div>
   );
 }

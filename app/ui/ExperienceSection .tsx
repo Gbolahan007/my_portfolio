@@ -14,32 +14,32 @@ export interface Experience {
 
 const experiences: Experience[] = [
   {
-    company: "Prishusoft",
-    role: "Software Engineer",
+    company: "SeemlyProfessions",
+    role: "Frontend Developer Intern → Lead Frontend Developer",
     experience:
-      "Developing and maintaining web applications using the PEAN stack. Collaborating with cross-functional teams to deliver high-quality software solutions.",
-    dates: "July 2024 - Present",
+      "Joined as a Frontend Developer Intern where I built responsive interfaces and optimized UI components. Due to my performance, I was promoted to Lead Frontend Developer. I led the frontend architecture, improved website performance, and introduced modern UI patterns that significantly enhanced user experience. My contributions helped reduce bounce rates, improved conversion flow, and increased overall client satisfaction.",
+    dates: "2023 – 2024",
   },
   {
-    company: "Prishusoft",
-    role: "MERN Stack Developer Intern",
+    company: "Eni’s Restaurant & Lounge",
+    role: "Freelance Frontend Developer",
     experience:
-      "Developed multiple minor projects and one major project. Gained hands-on experience in building full-stack web applications.",
-    dates: "Jan 2024 - June 2024",
+      "Designed and developed a complete digital menu system for both the restaurant and lounge. Built a clean, modern UI and added category-based filtering for meals and drinks. My work improved staff workflow, made customer ordering faster, and strengthened the brand’s online presence.",
+    dates: "2024",
   },
   {
-    company: "Cantech Networks Private Limited",
-    role: "Cloud Intern",
+    company: "Sisicaro Marketing Firm",
+    role: "Freelance Frontend Developer",
     experience:
-      "Worked on cloud infrastructure projects and gained experience with cloud technologies and deployment strategies.",
-    dates: "Sep 2023 - Dec 2023",
+      "Worked with the marketing team to build high-converting landing pages, optimized website speed, and implemented designs that aligned with their brand strategy. My contributions improved lead generation and helped the company present a more professional digital image to clients.",
+    dates: "2024",
   },
   {
-    company: "Tech Solutions Ltd",
-    role: "Frontend Developer Intern",
+    company: "Commodores Hotel & Bar",
+    role: "Frontend Developer",
     experience:
-      "Built responsive web interfaces and collaborated with design team to implement user-friendly features.",
-    dates: "May 2023 - Aug 2023",
+      "Developed the company’s main website and built a custom inventory management web application tailored specifically for hotel and bar operations. The system allowed staff to manage stock, track sales, monitor product usage, and generate real-time insights. This significantly reduced stock wastage, improved transparency, and saved the business time and money by eliminating manual record-keeping.",
+    dates: "2024 – Present",
   },
 ];
 

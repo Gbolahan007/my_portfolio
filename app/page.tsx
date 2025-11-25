@@ -38,12 +38,12 @@ export default function Portfolio() {
 
     const element = targetRef?.current;
 
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+    // if (element) {
+    //   element.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "start",
+    //   });
+    // }
 
     setMobileMenuOpen(false);
   };

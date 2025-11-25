@@ -131,10 +131,6 @@ export default function HeroSection() {
       <div
         ref={containerRef}
         className="max-w-5xl mx-auto text-center relative z-10 pt-32"
-        style={{
-          WebkitOverflowScrolling: "touch", // Smooth scrolling on iOS
-          transform: "translateZ(0)", // Force GPU layer
-        }}
       >
         <h2
           ref={greetingRef}

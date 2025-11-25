@@ -13,11 +13,9 @@ interface SmoothScrollProps {
 
 export default function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
-    // Only enable smooth scroll on desktop
     const isMobile = window.innerWidth < 1024; // Adjust breakpoint as needed
 
     if (isMobile) {
-      // On mobile, just update ScrollTrigger normally without Lenis
       const handleScroll = () => {
         ScrollTrigger.update();
       };
@@ -29,7 +27,6 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
       };
     }
 
-    // Desktop only: Initialize Lenis
     const lenis = new Lenis({
       lerp: 0.08,
       duration: 1.2,

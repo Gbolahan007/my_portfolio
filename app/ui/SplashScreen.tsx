@@ -1,11 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react"; // Added useEffect
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Bebas_Neue } from "next/font/google";
 
-// Load BEBAS font
 const bebas = Bebas_Neue({
   weight: "400",
   subsets: ["latin"],
@@ -13,11 +12,19 @@ const bebas = Bebas_Neue({
 
 export default function SplashScreen() {
   const [hidden, setHidden] = useState(false);
-
   const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
   const splashRef = useRef<HTMLDivElement | null>(null);
   const barRef = useRef<HTMLDivElement | null>(null);
   const barFillRef = useRef<HTMLDivElement | null>(null);
+
+  // 1. Lock Body Scroll on Mount
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    // Cleanup in case component unmounts unexpectedly
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -29,6 +36,14 @@ export default function SplashScreen() {
 
       const tl = gsap.timeline({
         onComplete: () => {
+          // 2. Disable pointer events immediately so user can scroll UNDER the animation
+          if (splashRef.current) {
+            splashRef.current.style.pointerEvents = "none";
+          }
+
+          // 3. Unlock body scroll immediately so user can move
+          document.body.style.overflow = "";
+
           gsap.to(splashRef.current, {
             y: "-100%",
             duration: 1.2,
@@ -50,15 +65,13 @@ export default function SplashScreen() {
         ease: "bounce.out",
       });
 
-      // Loading bar fade in
       tl.fromTo(
         barRef.current,
         { opacity: 0 },
         { opacity: 1, duration: 0.4 },
-        "-0.5" // starts slightly before letters finish
+        "-=0.5"
       );
 
-      // Fill the loading bar
       tl.to(barFillRef.current, {
         width: "100%",
         duration: 1.8,
@@ -73,7 +86,8 @@ export default function SplashScreen() {
   return (
     <div
       ref={splashRef}
-      className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-[#f7f6f3]"
+      // Ensure z-index is high, but pointer-events will be handled by GSAP
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#f7f6f3]"
     >
       <div
         className={`${bebas.className} flex items-center gap-4 md:gap-8 text-4xl md:text-7xl lg:text-9xl font-bold`}
@@ -93,7 +107,6 @@ export default function SplashScreen() {
         ))}
       </div>
 
-      {/*  Subtle Loading Bar */}
       <div
         ref={barRef}
         className="w-[180px] md:w-[260px] h-1 bg-black/10 mt-8 rounded-full overflow-hidden opacity-0"

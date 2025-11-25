@@ -64,8 +64,9 @@ const ProjectSection: React.FC = () => {
           "-=0.6"
         );
 
-      // Stacking cards animation
+      // Stacking cards animation with mobile optimization
       const cards = gsap.utils.toArray(".project-card");
+      const isMobile = window.innerWidth < 768;
 
       cards.forEach((card: any, index) => {
         const isLast = index === cards.length - 1;
@@ -76,7 +77,9 @@ const ProjectSection: React.FC = () => {
           end: isLast ? "bottom top" : "bottom 20%",
           pin: true,
           pinSpacing: false,
-          scrub: true,
+          scrub: isMobile ? 0.5 : true, // Add slight scrub delay on mobile for smoother feel
+          anticipatePin: 1, // Prevents jump when pinning starts
+          invalidateOnRefresh: true, // Recalculate on resize/refresh
           onUpdate: (self) => {
             const scale = 1 - (1 - 0.9) * self.progress;
             const brightness = 1 - 0.3 * self.progress;
@@ -85,6 +88,7 @@ const ProjectSection: React.FC = () => {
               filter: `brightness(${brightness})`,
               ease: "none",
               duration: 0,
+              overwrite: "auto", // Prevent animation conflicts
             });
           },
         });
@@ -99,6 +103,7 @@ const ProjectSection: React.FC = () => {
             trigger: card,
             start: "top 90%",
             toggleActions: "play none none reverse",
+            fastScrollEnd: true, // Optimizes for fast scrolling on mobile
           },
         });
       });
@@ -111,7 +116,7 @@ const ProjectSection: React.FC = () => {
     <div className="w-full bg-neutral-900">
       <div
         ref={sectionRef}
-        className="bg-neutral-800 px-6 md:px-12 lg:px-16 py-24 relative "
+        className="bg-neutral-800 px-6 md:px-12 lg:px-16 py-24 relative"
       >
         <div className="max-w-7xl mx-auto">
           {/* Title */}

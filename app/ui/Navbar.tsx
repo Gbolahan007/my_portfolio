@@ -1,20 +1,19 @@
 "use client";
 
 import type React from "react";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useScrollDirection } from "./hooks/useScrollDirection";
 
 interface NavbarProps {
   onMenuOpen: () => void;
   onNavClick: (section: string) => void;
 }
 
-export default function Navbar({ onMenuOpen, onNavClick }: NavbarProps) {
+export default function Navbar({ onMenuOpen }: NavbarProps) {
   const navRef = useRef(null);
-  const { isVisible } = useScrollDirection();
 
+  // NAVBAR FADE-IN ANIMATION
   useGSAP(() => {
     gsap.from(navRef.current, {
       y: -70,
@@ -23,17 +22,6 @@ export default function Navbar({ onMenuOpen, onNavClick }: NavbarProps) {
       ease: "power3.out",
     });
   }, []);
-
-  // SHOW/HIDE NAVBAR ON SCROLL
-  useEffect(() => {
-    if (!navRef.current) return;
-
-    gsap.to(navRef.current, {
-      y: isVisible ? 0 : -100, // hide it upwards
-      duration: 0.4,
-      ease: "power2.out",
-    });
-  }, [isVisible]);
 
   const handleNavHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const target = e.currentTarget;
@@ -75,27 +63,20 @@ export default function Navbar({ onMenuOpen, onNavClick }: NavbarProps) {
     });
   };
 
-  const handleNavClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    section: string
-  ) => {
-    e.preventDefault();
-    onNavClick(section);
-  };
-
   const navItems = [
-    { label: "Projects", id: "projects" },
-    { label: "Services", id: "services" },
-    { label: "About", id: "about" },
-    { label: "Contact", id: "contact" },
+    { label: "Projects" },
+    { label: "Services" },
+    { label: "About" },
+    { label: "Contact" },
   ];
 
   return (
     <nav
       ref={navRef}
-      className=" sm:max-w-7xl mt-5 flex justify-center fixed top-0 left-0 right-0 z-50"
+      className="sm:max-w-7xl mt-5 flex justify-center fixed top-0 left-0 right-0 z-50"
     >
-      <div className="flex items-center justify-between w-full mx-3 md:justify-center md:w-auto gap-8 bg-zinc-900 rounded-sm px-8 py-4 border- border-zinc-800 bordder ">
+      <div className="flex items-center justify-between w-full mx-3 md:justify-center md:w-auto gap-8 bg-zinc-900 rounded-sm px-8 py-4 border border-zinc-800">
+        {/* LOGO (MOBILE ONLY) */}
         <div className="md:hidden text-zinc-400 text-xl font-mono">
           &lt;/&gt;
         </div>
@@ -103,13 +84,12 @@ export default function Navbar({ onMenuOpen, onNavClick }: NavbarProps) {
         {/* DESKTOP NAV */}
         <div className="hidden md:flex items-center text-2xl gap-8">
           {navItems.map((item, index) => (
-            <div key={item.id} className="flex items-center gap-2">
+            <div key={item.label} className="flex items-center gap-2">
               <a
                 href="#"
                 className="relative overflow-hidden inline-block cursor-pointer"
                 onMouseEnter={handleNavHover}
                 onMouseLeave={handleNavLeave}
-                onClick={(e) => handleNavClick(e, item.id)}
               >
                 <span className="text-normal block text-zinc-400">
                   {item.label}

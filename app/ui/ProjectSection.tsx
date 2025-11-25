@@ -1,6 +1,9 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, { useEffect, useRef } from "react";
+import type React from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import PortfolioSect from "./PortfolioSect";
@@ -64,52 +67,58 @@ const ProjectSection: React.FC = () => {
           "-=0.6"
         );
 
-      // Stacking cards animation with mobile optimization
       const cards = gsap.utils.toArray(".project-card");
       const isMobile = window.innerWidth < 768;
 
       cards.forEach((card: any, index) => {
         const isLast = index === cards.length - 1;
 
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 20%",
-          end: isLast ? "bottom top" : "bottom 20%",
-          pin: true,
-          pinSpacing: false,
-          scrub: isMobile ? 0.5 : true, // Add slight scrub delay on mobile for smoother feel
-          anticipatePin: 1, // Prevents jump when pinning starts
-          invalidateOnRefresh: true, // Recalculate on resize/refresh
-          onUpdate: (self) => {
-            const scale = 1 - (1 - 0.9) * self.progress;
-            const brightness = 1 - 0.3 * self.progress;
-            gsap.to(card, {
-              scale: scale,
-              filter: `brightness(${brightness})`,
-              ease: "none",
-              duration: 0,
-              overwrite: "auto", // Prevent animation conflicts
-            });
-          },
-        });
-
-        // Initial reveal animation
-        gsap.from(card, {
-          y: 100,
-          opacity: 0,
-          duration: 1,
-          ease: "power3.out",
+        const cardTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: card,
             start: "top 90%",
-            toggleActions: "play none none reverse",
-            fastScrollEnd: true, // Optimizes for fast scrolling on mobile
+            end: isLast ? "bottom top" : "bottom 20%",
+            pin: true,
+            pinSpacing: false,
+            scrub: isMobile ? 0.5 : true,
+            anticipatePin: 1,
+            fastScrollEnd: true,
+            onUpdate: (self) => {
+              const scale = 1 - (1 - 0.9) * self.progress;
+              const brightness = 1 - 0.3 * self.progress;
+              gsap.to(card, {
+                scale: scale,
+                filter: `brightness(${brightness})`,
+                duration: 0,
+                overwrite: false, // Prevent animation conflicts
+              });
+            },
           },
         });
+
+        cardTimeline.from(
+          card,
+          {
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          0
+        );
+      });
+
+      ScrollTrigger.batch(".project-card", {
+        onEnter: (batch) => {
+          gsap.to(batch, { opacity: 1, overwrite: false });
+        },
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
   }, []);
 
   return (
@@ -119,7 +128,6 @@ const ProjectSection: React.FC = () => {
         className="bg-neutral-800 px-6 md:px-12 lg:px-16 py-24 relative"
       >
         <div className="max-w-7xl mx-auto">
-          {/* Title */}
           <div ref={titleRef} className="mb-6 overflow-hidden">
             <div className="title-line">
               <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold text-white leading-none tracking-tight">
@@ -132,14 +140,12 @@ const ProjectSection: React.FC = () => {
               </h1>
             </div>
           </div>
-          {/* Subtitle */}
           <div
             ref={subtitleRef}
             className="text-neutral-400 text-lg md:text-xl mb-8 uppercase tracking-wider"
           >
             (MY PORTFOLIO)
           </div>
-          {/* Description */}
           <p
             ref={descRef}
             className="text-neutral-300 text-base md:text-lg max-w-2xl mb-12 leading-relaxed"
@@ -148,7 +154,6 @@ const ProjectSection: React.FC = () => {
             <br />
             of being a front-end web developer.
           </p>
-          {/* All Projects Link */}
           <div ref={linkRef} className="">
             <a
               href="#"

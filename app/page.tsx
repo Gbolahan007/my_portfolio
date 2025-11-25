@@ -1,12 +1,12 @@
 "use client";
 
 import { useRef, useState } from "react";
-import ContactForm from "./ui/ContactForm";
-import ExperienceSection from "./ui/ExperienceSection ";
-import HeroSection from "./ui/HeroSection";
-import MobileMenu from "./ui/MobileMenu";
 import Navbar from "./ui/Navbar";
+import MobileMenu from "./ui/MobileMenu";
+import HeroSection from "./ui/HeroSection";
 import ProjectSection from "./ui/ProjectSection";
+import ExperienceSection from "./ui/ExperienceSection ";
+import ContactForm from "./ui/ContactForm";
 
 export default function Portfolio() {
   const projectsRef = useRef<HTMLDivElement>(null);

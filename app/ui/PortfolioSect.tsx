@@ -26,7 +26,7 @@ const portfolioItems: PortfolioItem[] = [
     image: "/urbfit.jpg",
     title: "e-commerce",
     description:
-      "A modern e-commerce app with product pages, animations and clean UI.",
+      "A modern e-commerce application built with a clean and responsive UI, featuring interactive product pages, smooth animations, and a streamlined shopping workflow that delivers a premium user experience on all devices.",
     liveLink: "https://urbfit.vercel.app/",
     githubLink: "https://github.com/Gbolahan007/urbfit-e-commrce",
     techStack: ["Typescript", "Next.js", "Tailwind CSS", "Gsap"],
@@ -46,7 +46,7 @@ const portfolioItems: PortfolioItem[] = [
     image: "/sisicaro.jpg",
     title: "Sisicaro Marketing agency",
     description:
-      "A sleek agency landing page with smooth animations and branding.",
+      "A sleek agency landing page with modern design, strong branding, and a clean, polished user experience.",
     liveLink: "https://sisicaro.com",
     githubLink: "https://github.com/Gbolahan007/sisi-caro",
     techStack: ["Next.js", "React", "Framer Motion", "Javascript"],
@@ -56,7 +56,7 @@ const portfolioItems: PortfolioItem[] = [
     image: "/ennis.png",
     title: "Eni's restaurant Menu",
     description:
-      "A digital restaurant menu with categories and mobile-first design.",
+      "A fully responsive digital restaurant menu designed with intuitive categories and a mobile-first experience that makes ordering simple and seamless.",
     liveLink: "https://eni-s-restaurant-lounge.vercel.app/",
     githubLink: "https://github.com/Gbolahan007/Eni-s-Restaurant-Lounge-",
     techStack: ["React", "Supabase", "Tailwind CSS", "Javascript"],

@@ -8,6 +8,7 @@ import { FaGithub } from "react-icons/fa";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -173,14 +174,16 @@ const PortfolioSect: React.FC = () => {
               </h3>
 
               <div className="mobile-image relative w-full h-[50vh] rounded-lg overflow-hidden shadow-2xl">
-                <Image
-                  src={item.image || "/placeholder.svg"}
-                  alt={item.title}
-                  fill
-                  className="object-cover"
-                  draggable={false}
-                  priority={index === 0}
-                />
+                <Link href={item.liveLink}>
+                  <Image
+                    src={item.image || "/placeholder.svg"}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                    draggable={false}
+                    priority={index === 0}
+                  />
+                </Link>
               </div>
 
               <p className="mobile-description text-white/70 text-base leading-relaxed">

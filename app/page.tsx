@@ -58,7 +58,7 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="bg-[#10120f] text-white overflow-hidden">
+    <div className="bg-[#10120f] text-white overflow-x-hidden">
       {/* NAVIGATION */}
       <Navbar
         onMenuOpen={() => setMobileMenuOpen(true)}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SplashScreen from "./ui/SplashScreen";
+import SmoothScroll from "./ui/SmoothScroll";
 
 const bebas = Bebas_Neue({
   weight: "400",
@@ -33,9 +34,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SplashScreen />
-        <div className={`${bebas.className} `}>
-          <main>{children}</main>
-        </div>
+        <SmoothScroll>
+          <div className={`${bebas.className}`}>
+            <main>{children}</main>
+          </div>
+        </SmoothScroll>
       </body>
     </html>
   );

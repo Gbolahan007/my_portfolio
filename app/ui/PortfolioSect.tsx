@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import type React from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { FiExternalLink } from "react-icons/fi";
 import { FaGithub } from "react-icons/fa";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,6 +20,7 @@ interface PortfolioItem {
   githubLink: string;
   techStack: string[];
 }
+
 const portfolioItems: PortfolioItem[] = [
   {
     id: 1,
@@ -81,29 +82,7 @@ const PortfolioSect: React.FC = () => {
     });
   };
 
-  // LENIS SETUP
-  useEffect(() => {
-    const lenis = new Lenis({
-      lerp: 0.1,
-      wheelMultiplier: 1.3,
-      touchMultiplier: 1.5,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      ScrollTrigger.update();
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-      ScrollTrigger.killAll();
-    };
-  }, []);
-
-  // MOBILE ANIMATIONS
+  // MOBILE ANIMATIONS - Simplified and optimized
   useGSAP(
     () => {
       if (window.innerWidth >= 640) return;
@@ -111,47 +90,23 @@ const PortfolioSect: React.FC = () => {
       const items = gsap.utils.toArray<HTMLElement>(".mobile-portfolio-item");
 
       items.forEach((item) => {
-        const number = item.querySelector(".mobile-number");
-        const imageContainer = item.querySelector(".mobile-image");
-        const description = item.querySelector(".mobile-description");
-        const techStack = item.querySelector(".mobile-tech-stack");
-        const links = item.querySelector(".mobile-links");
+        const elements = item.querySelectorAll(
+          ".mobile-number, .mobile-image, .mobile-description, .mobile-tech-stack, .mobile-links"
+        );
 
-        gsap.set([number, imageContainer, description, techStack, links], {
-          autoAlpha: 0,
-          y: 60,
-        });
-
-        const tl = gsap.timeline({
+        gsap.from(elements, {
+          opacity: 0,
+          y: 40,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: item,
-            start: "top 80%",
-            end: "top 30%",
-            scrub: 1,
+            start: "top 85%",
+            end: "top 50%",
+            toggleActions: "play none none reverse",
           },
         });
-
-        tl.to(number, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" })
-          .to(
-            imageContainer,
-            { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            "-=0.3"
-          )
-          .to(
-            description,
-            { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-            "-=0.4"
-          )
-          .to(
-            techStack,
-            { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-            "-=0.3"
-          )
-          .to(
-            links,
-            { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-            "-=0.3"
-          );
       });
     },
     { scope: mobileContainerRef, dependencies: [] }
@@ -177,6 +132,7 @@ const PortfolioSect: React.FC = () => {
           end: "bottom+=250% center",
           scrub: 1.2,
           pin: true,
+          anticipatePin: 1,
         },
       });
 
@@ -207,7 +163,7 @@ const PortfolioSect: React.FC = () => {
       {/* MOBILE VERSION */}
       <div
         ref={mobileContainerRef}
-        className="block sm:hidden min-h-screen py-12"
+        className="block sm:hidden min-h-screen py-12 px-6"
       >
         <div className="max-w-7xl mx-auto space-y-16">
           {portfolioItems.map((item, index) => (
@@ -218,11 +174,12 @@ const PortfolioSect: React.FC = () => {
 
               <div className="mobile-image relative w-full h-[50vh] rounded-lg overflow-hidden shadow-2xl">
                 <Image
-                  src={item.image}
+                  src={item.image || "/placeholder.svg"}
                   alt={item.title}
                   fill
                   className="object-cover"
                   draggable={false}
+                  priority={index === 0}
                 />
               </div>
 
@@ -245,6 +202,7 @@ const PortfolioSect: React.FC = () => {
                 <a
                   href={item.liveLink}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
                 >
                   <span className="font-semibold tracking-wide text-sm">
@@ -255,6 +213,7 @@ const PortfolioSect: React.FC = () => {
                 <a
                   href={item.githubLink}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="text-white/80 hover:text-white transition-colors"
                 >
                   <FaGithub size={22} />
@@ -268,7 +227,7 @@ const PortfolioSect: React.FC = () => {
       {/* DESKTOP VERSION */}
       <div
         ref={containerRef}
-        className="hidden sm:block min-h-screen py-12 md:py-16  px-4"
+        className="hidden sm:block min-h-screen py-12 md:py-16 px-4"
       >
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-4 md:gap-8">
           {/* LEFT PANEL */}
@@ -299,6 +258,7 @@ const PortfolioSect: React.FC = () => {
               <a
                 href={portfolioItems[activeIndex].liveLink}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
               >
                 <span className="font-semibold tracking-wide text-sm">
@@ -309,6 +269,7 @@ const PortfolioSect: React.FC = () => {
               <a
                 href={portfolioItems[activeIndex].githubLink}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="text-white/80 hover:text-white transition-colors"
               >
                 <FaGithub size={22} />
@@ -332,11 +293,12 @@ const PortfolioSect: React.FC = () => {
                 >
                   <div className="relative w-full h-full aspect-video rounded-lg overflow-hidden shadow-2xl">
                     <Image
-                      src={item.image}
+                      src={item.image || "/placeholder.svg"}
                       alt={item.title}
                       fill
                       className="object-cover"
                       draggable={false}
+                      priority={i === 0}
                     />
 
                     <p className="project-desc lg:hidden absolute bottom-4 left-4 right-4 text-white/90 text-sm backdrop-blur-md bg-black/40 px-3 py-2 rounded-lg">
@@ -347,6 +309,7 @@ const PortfolioSect: React.FC = () => {
                       <a
                         href={item.liveLink}
                         target="_blank"
+                        rel="noopener noreferrer"
                         className="fixed cursor-pointer z-50 flex items-center gap-2 px-4 py-2 bg-white text-black font-semibold text-sm shadow-lg"
                         style={{
                           left: `${mousePos.x}px`,

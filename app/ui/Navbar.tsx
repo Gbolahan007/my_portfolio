@@ -1,10 +1,10 @@
 "use client";
 
 import type React from "react";
-
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useScrollDirection } from "./hooks/useScrollDirection";
 
 interface NavbarProps {
   onMenuOpen: () => void;
@@ -13,15 +13,27 @@ interface NavbarProps {
 
 export default function Navbar({ onMenuOpen, onNavClick }: NavbarProps) {
   const navRef = useRef(null);
+  const { isVisible } = useScrollDirection();
 
   useGSAP(() => {
     gsap.from(navRef.current, {
-      y: -50,
+      y: -70,
       opacity: 0,
       duration: 0.8,
       ease: "power3.out",
     });
   }, []);
+
+  // SHOW/HIDE NAVBAR ON SCROLL
+  useEffect(() => {
+    if (!navRef.current) return;
+
+    gsap.to(navRef.current, {
+      y: isVisible ? 0 : -100, // hide it upwards
+      duration: 0.4,
+      ease: "power2.out",
+    });
+  }, [isVisible]);
 
   const handleNavHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const target = e.currentTarget;
@@ -79,8 +91,11 @@ export default function Navbar({ onMenuOpen, onNavClick }: NavbarProps) {
   ];
 
   return (
-    <nav ref={navRef} className="w-full max-w-7xl mt-5 flex justify-center">
-      <div className="flex items-center justify-between w-full md:justify-center md:w-auto gap-8 bg-zinc-900 rounded-sm px-8 py-4 border border-zinc-800">
+    <nav
+      ref={navRef}
+      className=" sm:max-w-7xl mt-5 flex justify-center fixed top-0 left-0 right-0 z-50"
+    >
+      <div className="flex items-center justify-between w-full mx-3 md:justify-center md:w-auto gap-8 bg-zinc-900 rounded-sm px-8 py-4 border- border-zinc-800 bordder ">
         <div className="md:hidden text-zinc-400 text-xl font-mono">
           &lt;/&gt;
         </div>

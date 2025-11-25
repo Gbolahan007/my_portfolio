@@ -99,10 +99,10 @@ export default function HeroSection() {
   );
 
   return (
-    <div className="lg:min-h-screen mb-14 pb-8 lg:my-0 bg-[#10120f] text-white px-4 relative overflow-hidden">
+    <div className="lg:min-h-screen mb-14 pb-8 lg:my-0 bg-[#10120f] text-white px-4 relative overflow-x-hidden">
       <div
         ref={containerRef}
-        className="max-w-5xl mx-auto text-center relative z-10 pt-12"
+        className="max-w-5xl mx-auto text-center relative z-10 pt-32"
       >
         {/* Greeting */}
         <h2

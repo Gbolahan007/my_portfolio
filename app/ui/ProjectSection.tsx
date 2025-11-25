@@ -18,14 +18,21 @@ const ProjectSection: React.FC = () => {
   const linkRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Determine mobile status for conditional logic
+    const isMobile = window.innerWidth < 768;
+
+    // Use gsap.context for automatic cleanup and scoping
     const ctx = gsap.context(() => {
-      // Text reveal animations
+      // --- 1. Text Reveal Animation (Title/Header) ---
+      // This is a standard entrance animation, good as is.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 70%",
           end: "top 30%",
           toggleActions: "play none none reverse",
+          // Add a refresh listener for better reliability after load
+          onRefresh: () => console.log("ProjectSection Header refreshed"),
         },
       });
 
@@ -67,60 +74,64 @@ const ProjectSection: React.FC = () => {
           "-=0.6"
         );
 
+      // --- 2. Project Card Pinning/Scaling Animation ---
       const cards = gsap.utils.toArray(".project-card");
-      const isMobile = window.innerWidth < 768;
 
       cards.forEach((card: any, index) => {
         const isLast = index === cards.length - 1;
 
-        const cardTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: card,
-            start: "top 90%",
-            end: isLast ? "bottom top" : "bottom 20%",
-            pin: true,
-            pinSpacing: false,
-            scrub: isMobile ? 0.5 : true,
-            anticipatePin: 1,
-            fastScrollEnd: true,
-            onUpdate: (self) => {
-              const scale = 1 - (1 - 0.9) * self.progress;
-              const brightness = 1 - 0.3 * self.progress;
-              gsap.to(card, {
-                scale: scale,
-                filter: `brightness(${brightness})`,
-                duration: 0,
-                overwrite: false, // Prevent animation conflicts
-              });
-            },
+        // Create a scroll trigger for pinning and progressive styling
+        ScrollTrigger.create({
+          // Using ScrollTrigger.create instead of a timeline for just pinning/scrub
+          trigger: card,
+          start: "top 90%",
+          // The last card should pin until it exits the viewport
+          end: isLast ? "bottom top" : "bottom 20%",
+          pin: !isMobile, // Only pin on desktop (Pinning often conflicts with smooth scroll on mobile)
+          pinSpacing: !isMobile, // Only use pinSpacing if pinning is active
+          scrub: isMobile ? 0.5 : true, // Use a fixed scrub time for mobile (less CPU intensive)
+          anticipatePin: 1,
+          fastScrollEnd: true,
+
+          // Use onUpdate to apply scale and brightness effect while scrolling
+          onUpdate: (self) => {
+            // Apply scale and brightness based on scroll progress
+            const scale = 1 - (1 - 0.9) * self.progress;
+            const brightness = 1 - 0.3 * self.progress;
+
+            // Set overwrite to 'auto' to manage other animations better, or 'false'
+            gsap.to(card, {
+              scale: scale,
+              filter: `brightness(${brightness})`,
+              duration: 0, // Instant update within the scrub
+              overwrite: false,
+              force3D: true, // Maintain GPU acceleration for smooth scaling/brightness changes
+            });
           },
         });
 
-        cardTimeline.from(
-          card,
-          {
-            y: 100,
-            opacity: 0,
-            duration: 1,
-            ease: "power3.out",
+        // --- 3. Initial Card Entrance Animation (Run once on Enter) ---
+        // This runs the card fly-in, separate from the pinning/scaling logic.
+        // This is separate from the pinning trigger above, which is cleaner.
+        gsap.from(card, {
+          y: 100,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 95%", // Start the entrance slightly earlier
+            toggleActions: "play none none reverse",
           },
-          0
-        );
-      });
-
-      ScrollTrigger.batch(".project-card", {
-        onEnter: (batch) => {
-          gsap.to(batch, { opacity: 1, overwrite: false });
-        },
+        });
       });
     }, sectionRef);
 
+    // This cleanup function is crucial and looks correct.
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
-
   return (
     <div className="w-full bg-neutral-900">
       <div

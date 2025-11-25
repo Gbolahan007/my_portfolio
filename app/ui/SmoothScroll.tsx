@@ -13,18 +13,34 @@ interface SmoothScrollProps {
 
 export default function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
-    // Initialize Lenis with mobile-optimized settings
+    // Only enable smooth scroll on desktop
+    const isMobile = window.innerWidth < 1024; // Adjust breakpoint as needed
+
+    if (isMobile) {
+      // On mobile, just update ScrollTrigger normally without Lenis
+      const handleScroll = () => {
+        ScrollTrigger.update();
+      };
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+
+    // Desktop only: Initialize Lenis
     const lenis = new Lenis({
       lerp: 0.08,
       duration: 1.2,
-      touchMultiplier: 2, // Increase touch sensitivity
+      touchMultiplier: 2,
       wheelMultiplier: 1,
       infinite: false,
       orientation: "vertical",
       gestureOrientation: "vertical",
     });
 
-    // Request animation frame loop
+    // Request animation frame loop for desktop
     let rafId: number;
 
     function raf(time: number) {

@@ -86,8 +86,7 @@ export default function SplashScreen() {
   return (
     <div
       ref={splashRef}
-      // Ensure z-index is high, but pointer-events will be handled by GSAP
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#f7f6f3]"
+      className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-[#f7f6f3]"
     >
       <div
         className={`${bebas.className} flex items-center gap-4 md:gap-8 text-4xl md:text-7xl lg:text-9xl font-bold`}

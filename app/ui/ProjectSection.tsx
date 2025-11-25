@@ -139,7 +139,7 @@ const ProjectSection: React.FC = () => {
         className="bg-neutral-800 px-6 md:px-12 lg:px-16 py-24 relative"
       >
         <div className="max-w-7xl mx-auto">
-          <div ref={titleRef} className="mb-6 overflow-hidden">
+          <div ref={titleRef} className="mb-6 ">
             <div className="title-line">
               <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold text-white leading-none tracking-tight">
                 SELECTED

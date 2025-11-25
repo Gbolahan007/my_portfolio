@@ -14,7 +14,6 @@ import ContactForm from "./ui/ContactForm";
 gsap.registerPlugin(ScrollToPlugin);
 
 export default function Portfolio() {
-  // Remove unused refs
   const projectsRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
@@ -43,14 +42,16 @@ export default function Portfolio() {
     }
 
     if (targetRef.current) {
+      gsap.killTweensOf(window);
+
       gsap.to(window, {
         scrollTo: {
           y: targetRef.current,
-          autoKill: true,
-          offsetY: 80, // Add offset for navbar height
+          autoKill: false,
+          offsetY: 80,
         },
-        duration: 1,
-        ease: "power3.inOut",
+        duration: 0.8,
+        ease: "power2.out",
       });
     }
 
@@ -75,7 +76,7 @@ export default function Portfolio() {
       {/* HERO CONTENT */}
       <HeroSection />
 
-      {/* Add proper section wrappers with IDs */}
+      {/* Sections with proper refs */}
       <section id="projects" ref={projectsRef}>
         <ProjectSection />
       </section>
@@ -85,7 +86,7 @@ export default function Portfolio() {
       </section>
 
       <section id="about" ref={aboutRef}>
-        {/* About section content can be added here */}
+        {/* About section content */}
       </section>
 
       <section id="contact" ref={contactRef}>

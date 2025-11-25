@@ -10,7 +10,7 @@ interface NavbarProps {
   onNavClick: (section: string) => void;
 }
 
-export default function Navbar({ onMenuOpen }: NavbarProps) {
+export default function Navbar({ onMenuOpen, onNavClick }: NavbarProps) {
   const navRef = useRef(null);
 
   // NAVBAR FADE-IN ANIMATION
@@ -63,11 +63,19 @@ export default function Navbar({ onMenuOpen }: NavbarProps) {
     });
   };
 
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    section: string
+  ) => {
+    e.preventDefault();
+    onNavClick(section);
+  };
+
   const navItems = [
-    { label: "Projects" },
-    { label: "Services" },
-    { label: "About" },
-    { label: "Contact" },
+    { label: "Projects", id: "projects" },
+    { label: "Services", id: "services" },
+    { label: "About", id: "about" },
+    { label: "Contact", id: "contact" },
   ];
 
   return (
@@ -84,12 +92,13 @@ export default function Navbar({ onMenuOpen }: NavbarProps) {
         {/* DESKTOP NAV */}
         <div className="hidden md:flex items-center text-2xl gap-8">
           {navItems.map((item, index) => (
-            <div key={item.label} className="flex items-center gap-2">
+            <div key={item.id} className="flex items-center gap-2">
               <a
                 href="#"
                 className="relative overflow-hidden inline-block cursor-pointer"
                 onMouseEnter={handleNavHover}
                 onMouseLeave={handleNavLeave}
+                onClick={(e) => handleNavClick(e, item.id)}
               >
                 <span className="text-normal block text-zinc-400">
                   {item.label}

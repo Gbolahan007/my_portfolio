@@ -12,7 +12,6 @@ export default function HeroSection() {
   const descriptionRef = useRef(null);
   const [canAnimate, setCanAnimate] = useState(false);
 
-  // Listen for splash completion
   useEffect(() => {
     const handleSplashComplete = () => {
       setCanAnimate(true);
@@ -29,20 +28,31 @@ export default function HeroSection() {
     () => {
       if (!canAnimate) return;
 
-      // Set initial states - keep elements hidden
+      // Force GPU acceleration for all animated elements
+      gsap.set(
+        [
+          containerRef.current,
+          greetingRef.current,
+          nameRef.current,
+          descriptionRef.current,
+        ],
+        {
+          force3D: true,
+          willChange: "transform, opacity",
+        }
+      );
+
       gsap.set([greetingRef.current, nameRef.current, descriptionRef.current], {
         opacity: 0,
         y: 80,
         scale: 0.95,
       });
 
-      // Create main timeline with better easing
       const tl = gsap.timeline({
         defaults: { ease: "power4.out" },
-        delay: 0.2, // Small delay after splash completes
+        delay: 0.2,
       });
 
-      // Animate greeting with bounce
       tl.to(greetingRef.current, {
         opacity: 1,
         y: 0,
@@ -50,7 +60,6 @@ export default function HeroSection() {
         duration: 1.2,
         ease: "back.out(1.4)",
       })
-        // Animate name with stagger effect on letters
         .to(
           nameRef.current,
           {
@@ -62,7 +71,6 @@ export default function HeroSection() {
           },
           "-=0.8"
         )
-        // Animate description
         .to(
           descriptionRef.current,
           {
@@ -71,29 +79,49 @@ export default function HeroSection() {
             scale: 1,
             duration: 1.2,
             ease: "power3.out",
+            // Clear willChange after animation completes
+            onComplete: () => {
+              gsap.set(
+                [greetingRef.current, nameRef.current, descriptionRef.current],
+                {
+                  willChange: "auto",
+                }
+              );
+            },
           },
           "-=0.9"
         );
 
-      // Subtle floating animation after everything is visible
-      gsap.to(containerRef.current, {
-        y: -12,
-        duration: 3,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        delay: 2,
-      });
+      // Reduce or disable continuous animations on mobile
+      const isMobile = window.innerWidth < 768;
 
-      // Add a subtle glow pulse to the name
-      gsap.to(nameRef.current, {
-        textShadow: "0 0 20px rgba(255,255,255,0.3)",
-        duration: 2,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        delay: 2,
-      });
+      if (!isMobile) {
+        // Floating animation - desktop only
+        gsap.to(containerRef.current, {
+          y: -12,
+          duration: 3,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: 2,
+          force3D: true,
+        });
+
+        // Glow pulse - desktop only
+        gsap.to(nameRef.current, {
+          textShadow: "0 0 20px rgba(255,255,255,0.3)",
+          duration: 2,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: 2,
+        });
+      } else {
+        // Clear willChange on mobile after intro animation
+        setTimeout(() => {
+          gsap.set(containerRef.current, { willChange: "auto" });
+        }, 2500);
+      }
     },
     { scope: containerRef, dependencies: [canAnimate] }
   );
@@ -103,8 +131,11 @@ export default function HeroSection() {
       <div
         ref={containerRef}
         className="max-w-5xl mx-auto text-center relative z-10 pt-32"
+        style={{
+          WebkitOverflowScrolling: "touch", // Smooth scrolling on iOS
+          transform: "translateZ(0)", // Force GPU layer
+        }}
       >
-        {/* Greeting */}
         <h2
           ref={greetingRef}
           className="text-4xl md:text-5xl font-bold mb-4"
@@ -113,7 +144,6 @@ export default function HeroSection() {
           <span className="text-gray-500">Hi,</span>
         </h2>
 
-        {/* Name */}
         <h1
           ref={nameRef}
           className="text-5xl md:text-7xl font-bold mb-8"
@@ -125,7 +155,6 @@ export default function HeroSection() {
           </span>
         </h1>
 
-        {/* Description */}
         <p
           ref={descriptionRef}
           className="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed"
@@ -133,7 +162,7 @@ export default function HeroSection() {
         >
           Front-end developer with 3 years of experience turning ideas into
           real, scalable applications. I help teams and founders build fast,
-          reliable web and mobile solutions,crafted for smooth and meaningful
+          reliable web and mobile solutions, crafted for smooth and meaningful
           user experiences.
         </p>
       </div>

@@ -163,7 +163,7 @@ const PortfolioSect: React.FC = () => {
       {/* MOBILE VERSION */}
       <div
         ref={mobileContainerRef}
-        className="block sm:hidden min-h-screen py-12 px-6"
+        className="block sm:hidden min-h-screen py-12"
       >
         <div className="max-w-7xl mx-auto space-y-16">
           {portfolioItems.map((item, index) => (

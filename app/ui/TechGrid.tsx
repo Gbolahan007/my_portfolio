@@ -5,7 +5,6 @@
 import gsap from "gsap";
 import React, { useRef } from "react";
 
-// react-icons
 import { useGSAP } from "@gsap/react";
 import {
   SiFramer,

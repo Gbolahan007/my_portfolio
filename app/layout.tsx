@@ -69,7 +69,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Lawal Omogbolahan — Frontend Developer",
+    title: "Lawal Omogbolahan | Frontend Developer",
     description:
       "Explore my portfolio showcasing modern React, Next.js, and frontend engineering projects.",
     images: ["/fav.jpg"],

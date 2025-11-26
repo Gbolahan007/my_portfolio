@@ -67,34 +67,33 @@ export default function ContactForm() {
   // GSAP animation
   useGSAP(() => {
     const ctx = gsap.context(() => {
-      // 1. Set Initial States (Kept same)
       gsap.set(
         [headerRef.current, subheaderRef.current, descriptionRef.current],
         {
-          autoAlpha: 0, // Opacity and visibility hidden
-          y: 50, // Start 50px below final position
+          autoAlpha: 0,
+          y: 50,
         }
       );
 
       gsap.set(formElementsRef.current, { autoAlpha: 0, y: 50 });
-      gsap.set(contactInfoRef.current, { autoAlpha: 0, x: 50 }); // Start 50px right // 2. Create the Master Timeline with ScrollTrigger (Kept same)
+      gsap.set(contactInfoRef.current, { autoAlpha: 0, x: 50 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 85%", // Start reveal a bit sooner
+          start: "top 85%",
           end: "top 20%",
-          toggleActions: "play none none reverse", // Play once on scroll down, reverse on scroll up
+          toggleActions: "play none none reverse",
         },
-      }); // 3. Animate Header Elements (Staggered Introduction)
+      });
 
       tl.to([headerRef.current, subheaderRef.current, descriptionRef.current], {
         autoAlpha: 1,
         y: 0,
         duration: 0.8,
-        ease: "power3.out", // Smoother easing
-        stagger: 0.15, // Stagger the header elements for a sequential title reveal
-      }); // 4. Animate Form Elements (Staggered Fade/Slide Up)
+        ease: "power3.out",
+        stagger: 0.15,
+      });
 
       tl.to(
         formElementsRef.current,
@@ -103,11 +102,10 @@ export default function ContactForm() {
           y: 0,
           duration: 0.6,
           ease: "power2.out",
-          stagger: 0.1, // Stagger each input field
+          stagger: 0.1,
         },
         "-=0.4"
-      ); // Start this animation *before* the header timeline finishes // 5. Animate Contact Info (Staggered Fade/Slide Right)
-
+      );
       tl.to(
         contactInfoRef.current,
         {
@@ -115,10 +113,10 @@ export default function ContactForm() {
           x: 0,
           duration: 0.6,
           ease: "power2.out",
-          stagger: 0.1, // Stagger each contact link/div
+          stagger: 0.1,
         },
         "<"
-      ); // Start at the same time as the form elements (using the "<" position parameter)
+      );
     }, containerRef);
 
     return () => {

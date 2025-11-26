@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yourdomain.com"), // ← change to your real domain
+  metadataBase: new URL("https://gbolahandev.vercel.app/"),
 
   title: {
     default: "Lawal Omogbolahan — Frontend Developer & React Specialist",
@@ -42,7 +42,9 @@ export const metadata: Metadata = {
     "Lawal Omogbolahan",
   ],
 
-  authors: [{ name: "Lawal Omogbolahan", url: "https://yourdomain.com" }],
+  authors: [
+    { name: "Lawal Omogbolahan", url: "https://gbolahandev.vercel.app/" },
+  ],
 
   creator: "Lawal Omogbolahan",
   publisher: "Lawal Omogbolahan",
@@ -50,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://yourdomain.com",
+    url: "https://gbolahandev.vercel.app/",
     siteName: "Lawal Omogbolahan Portfolio",
     title: "Lawal Omogbolahan — Frontend Developer & React Specialist",
     description:
@@ -67,11 +69,11 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Gbolahan Adeoye — Frontend Developer",
+    title: "Lawal Omogbolahan — Frontend Developer",
     description:
       "Explore my portfolio showcasing modern React, Next.js, and frontend engineering projects.",
-    images: ["/og-image.png"],
-    creator: "@yourTwitter",
+    images: ["/fav.png"],
+    creator: "https://wa.me/2348161554055",
   },
 
   robots: {
@@ -87,7 +89,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://yourdomain.com",
+    canonical: "https://gbolahandev.vercel.app/",
   },
   icons: {
     icon: [

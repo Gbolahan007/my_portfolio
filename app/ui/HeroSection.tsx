@@ -158,8 +158,8 @@ export default function HeroSection() {
         >
           Front-end developer with 3 years of experience turning ideas into
           real, scalable applications. I help teams and founders build fast,
-          reliable web and mobile solutions, crafted for smooth and meaningful
-          user experiences.
+          reliable web solutions, crafted for smooth and meaningful user
+          experiences.
         </p>
       </div>
 

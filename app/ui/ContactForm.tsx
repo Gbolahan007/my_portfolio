@@ -3,9 +3,10 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
+import { useRef, useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { handleSubmit } from "../data/data-service";
+import { toast, Toaster } from "sonner";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,14 +17,22 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full bg-black text-white py-4 px-8 font-bold text-lg hover:bg-gray-800 transition-colors disabled:bg-gray-400 cursor-pointer"
+      className="w-full bg-black text-white py-4 px-8 font-bold text-lg hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
     >
       {pending ? "SENDING..." : "SEND MESSAGE"}
     </button>
   );
 }
 
+const initialState = {
+  success: false,
+  message: "",
+};
+
 export default function ContactForm() {
+  // Setup Action State
+  const [state, formAction] = useActionState(handleSubmit, initialState);
+
   const formRef = useRef<HTMLFormElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLHeadingElement>(null);
@@ -31,6 +40,30 @@ export default function ContactForm() {
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const formElementsRef = useRef<Array<HTMLElement>>([]);
   const contactInfoRef = useRef<Array<HTMLElement>>([]);
+
+  // Handle Success/Error Feedback
+  useEffect(() => {
+    if (state.message) {
+      if (state.success) {
+        toast.success(state.message, {
+          duration: 4000,
+          style: {
+            background: "#10B981",
+            color: "#fff",
+          },
+        });
+        formRef.current?.reset();
+      } else {
+        toast.error(state.message, {
+          duration: 4000,
+          style: {
+            background: "#EF4444",
+            color: "#fff",
+          },
+        });
+      }
+    }
+  }, [state]);
 
   // GSAP animation
   useGSAP(() => {
@@ -73,19 +106,23 @@ export default function ContactForm() {
         );
 
       formElementsRef.current.forEach((el, i) => {
-        tl.to(
-          el,
-          { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-          i === 0 ? "+=0.1" : `-=${0.2 + i * 0.05}`
-        );
+        if (el) {
+          tl.to(
+            el,
+            { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            i === 0 ? "+=0.1" : `-=${0.2 + i * 0.05}`
+          );
+        }
       });
 
       contactInfoRef.current.forEach((el, i) => {
-        tl.to(
-          el,
-          { autoAlpha: 1, x: 0, duration: 0.5, ease: "power2.out" },
-          i === 0 ? "+=0.1" : `-=${0.2 + i * 0.1}`
-        );
+        if (el) {
+          tl.to(
+            el,
+            { autoAlpha: 1, x: 0, duration: 0.5, ease: "power2.out" },
+            i === 0 ? "+=0.1" : `-=${0.2 + i * 0.1}`
+          );
+        }
       });
     }, containerRef);
 
@@ -112,6 +149,17 @@ export default function ContactForm() {
       ref={containerRef}
       className="min-h-screen w-full bg-[#E8E8E3] p-8 md:p-16"
     >
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            borderRadius: "8px",
+            fontSize: "14px",
+          },
+        }}
+      />
+
       <div className="w-full mx-auto">
         {/* Header */}
         <div className="mb-12">
@@ -219,7 +267,7 @@ export default function ContactForm() {
           {/* Form */}
           <form
             ref={formRef}
-            action={handleSubmit}
+            action={formAction}
             className="order-2 md:order-1 space-y-6"
           >
             <div>

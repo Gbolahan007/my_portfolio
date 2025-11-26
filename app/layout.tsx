@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://gbolahandev.vercel.app/",
     siteName: "Lawal Omogbolahan Portfolio",
-    title: "Lawal Omogbolahan — Frontend Developer & React Specialist",
+    title: "Lawal Omogbolahan — Frontend Developer & React",
     description:
       "Modern, responsive, and high-performance websites built with React and Next.js. View my projects, skills, and experience.",
     images: [
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     title: "Lawal Omogbolahan — Frontend Developer",
     description:
       "Explore my portfolio showcasing modern React, Next.js, and frontend engineering projects.",
-    images: ["/fav.png"],
+    images: ["/fav.jpg"],
     creator: "https://wa.me/2348161554055",
   },
 
@@ -101,13 +101,6 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-
-    other: [
-      {
-        rel: "mask-icon",
-        url: "/safari-pinned-tab.svg",
-      },
     ],
   },
 };

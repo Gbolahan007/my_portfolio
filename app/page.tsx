@@ -7,6 +7,7 @@ import HeroSection from "./ui/HeroSection";
 import ProjectSection from "./ui/ProjectSection";
 import ExperienceSection from "./ui/ExperienceSection ";
 import ContactForm from "./ui/ContactForm";
+import About from "./ui/About";
 
 export default function Portfolio() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function Portfolio() {
         <ExperienceSection />
       </section>
 
-      <section className="section-about">{/* About section content */}</section>
+      <section className="section-about">{/* <About /> */}</section>
 
       <section className="section-contact">
         <ContactForm />

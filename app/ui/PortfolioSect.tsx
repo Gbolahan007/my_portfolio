@@ -63,6 +63,22 @@ const portfolioItems: PortfolioItem[] = [
     githubLink: "https://github.com/Gbolahan007/Eni-s-Restaurant-Lounge-",
     techStack: ["React", "Supabase", "Tailwind CSS", "Javascript"],
   },
+  {
+    id: 5,
+    image: "/bead.png",
+    title: "Beaders Africa Marketplace",
+    description:
+      "A vibrant African beads marketplace connecting artisans and buyers across the continent. Features curated collections of handcrafted bead jewelry and accessories, with a seamless shopping experience built for discovering and celebrating African craftsmanship.",
+    liveLink: "https://beadersafrica.com",
+    githubLink: "https://github.com/Gbolahan007/beader-africa",
+    techStack: [
+      "Next.js",
+      "Node.js",
+      "Tailwind CSS",
+      "PostgreSQL",
+      "Javascript",
+    ],
+  },
 ];
 
 const PortfolioSect: React.FC = () => {
@@ -92,7 +108,7 @@ const PortfolioSect: React.FC = () => {
 
       items.forEach((item) => {
         const elements = item.querySelectorAll(
-          ".mobile-number, .mobile-image, .mobile-description, .mobile-tech-stack, .mobile-links"
+          ".mobile-number, .mobile-image, .mobile-description, .mobile-tech-stack, .mobile-links",
         );
 
         gsap.from(elements, {
@@ -110,7 +126,7 @@ const PortfolioSect: React.FC = () => {
         });
       });
     },
-    { scope: mobileContainerRef, dependencies: [] }
+    { scope: mobileContainerRef, dependencies: [] },
   );
 
   // DESKTOP ANIMATIONS
@@ -141,7 +157,7 @@ const PortfolioSect: React.FC = () => {
         tl.to(
           images[i],
           { scale: 0.7, rotation: 5, duration: 1, ease: "none" },
-          i
+          i,
         ).to(images[i + 1], { y: "0%", duration: 1, ease: "none" }, i);
       }
 
@@ -156,7 +172,7 @@ const PortfolioSect: React.FC = () => {
         },
       });
     },
-    { scope: containerRef, dependencies: [] }
+    { scope: containerRef, dependencies: [] },
   );
 
   return (

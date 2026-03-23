@@ -35,11 +35,11 @@ const experiences: Experience[] = [
     dates: "2024",
   },
   {
-    company: "Commodores Hotel & Bar",
-    role: "Frontend Developer",
+    company: "Beaders Africa",
+    role: "Lead Frontend Engineer (Freelance)",
     experience:
-      "Developed the company’s main website and built a custom inventory management web application tailored specifically for hotel and bar operations. The system allowed staff to manage stock, track sales, monitor product usage, and generate real-time insights. This significantly reduced stock wastage, improved transparency, and saved the business time and money by eliminating manual record-keeping.",
-    dates: "2024 – Present",
+      "Led the end-to-end engineering of Beaders Africa's platform , a fully functional e-commerce marketplace connecting bead artisans and buyers across the continent. Architected and developed the website and marketplace from the ground up, overseeing features for product listings, buyer/seller flows, and seamless transactions. Also led a cross-functional team including a UI/UX designer and data analyst, coordinating deliverables and ensuring a cohesive, high-quality product.",
+    dates: "2025 – Present",
   },
 ];
 
@@ -70,16 +70,16 @@ const ExperienceSection: FC = () => {
         if (!item) return;
 
         const companyEl = item.querySelector(
-          ".company-name"
+          ".company-name",
         ) as HTMLElement | null;
         const roleEl = item.querySelector(".role") as HTMLElement | null;
         const textEl = item.querySelector(
-          ".experience-text"
+          ".experience-text",
         ) as HTMLElement | null;
         const datesEl = item.querySelector(".dates") as HTMLElement | null;
         const dotEl = item.querySelector(".timeline-dot") as HTMLElement | null;
         const lineEl = item.querySelector(
-          ".timeline-line"
+          ".timeline-line",
         ) as HTMLElement | null;
 
         const tl = gsap.timeline({
@@ -101,28 +101,28 @@ const ExperienceSection: FC = () => {
           tl.from(
             roleEl,
             { y: 30, opacity: 0, duration: 0.6, ease: "power3.out" },
-            "-=0.4"
+            "-=0.4",
           );
 
         if (textEl)
           tl.from(
             textEl,
             { y: 30, opacity: 0, duration: 0.6, ease: "power3.out" },
-            "-=0.3"
+            "-=0.3",
           );
 
         if (datesEl)
           tl.from(
             datesEl,
             { y: 20, opacity: 0, duration: 0.5, ease: "power3.out" },
-            "-=0.4"
+            "-=0.4",
           );
 
         if (dotEl)
           tl.from(
             dotEl,
             { scale: 0, opacity: 0, duration: 0.4, ease: "back.out(1.7)" },
-            "-=0.5"
+            "-=0.5",
           );
 
         if (lineEl)
@@ -134,7 +134,7 @@ const ExperienceSection: FC = () => {
               duration: 0.6,
               ease: "power2.out",
             },
-            "-=0.3"
+            "-=0.3",
           );
       });
 
@@ -143,14 +143,14 @@ const ExperienceSection: FC = () => {
         if (!card) return;
 
         const companyEl = card.querySelector(
-          ".mobile-company-name"
+          ".mobile-company-name",
         ) as HTMLElement | null;
         const roleEl = card.querySelector(".mobile-role") as HTMLElement | null;
         const textEl = card.querySelector(
-          ".mobile-experience-text"
+          ".mobile-experience-text",
         ) as HTMLElement | null;
         const datesEl = card.querySelector(
-          ".mobile-dates"
+          ".mobile-dates",
         ) as HTMLElement | null;
 
         const mobileTl = gsap.timeline({
@@ -174,21 +174,21 @@ const ExperienceSection: FC = () => {
           mobileTl.from(
             roleEl,
             { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" },
-            "-=0.5"
+            "-=0.5",
           );
 
         if (textEl)
           mobileTl.from(
             textEl,
             { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" },
-            "-=0.6"
+            "-=0.6",
           );
 
         if (datesEl)
           mobileTl.from(
             datesEl,
             { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" },
-            "-=0.6"
+            "-=0.6",
           );
       });
     });

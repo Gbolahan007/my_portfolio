@@ -39,7 +39,7 @@ export default function HeroSection() {
         {
           force3D: true,
           willChange: "transform, opacity",
-        }
+        },
       );
 
       gsap.set([greetingRef.current, nameRef.current, descriptionRef.current], {
@@ -69,7 +69,7 @@ export default function HeroSection() {
             duration: 1.4,
             ease: "power4.out",
           },
-          "-=0.8"
+          "-=0.8",
         )
         .to(
           descriptionRef.current,
@@ -85,11 +85,11 @@ export default function HeroSection() {
                 [greetingRef.current, nameRef.current, descriptionRef.current],
                 {
                   willChange: "auto",
-                }
+                },
               );
             },
           },
-          "-=0.9"
+          "-=0.9",
         );
 
       // Reduce or disable continuous animations on mobile
@@ -123,7 +123,7 @@ export default function HeroSection() {
         }, 2500);
       }
     },
-    { scope: containerRef, dependencies: [canAnimate] }
+    { scope: containerRef, dependencies: [canAnimate] },
   );
 
   return (
@@ -156,7 +156,7 @@ export default function HeroSection() {
           className="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed"
           style={{ opacity: 0 }}
         >
-          Front-end developer with 3 years of experience turning ideas into
+          Front-end developer with 4 years of experience turning ideas into
           real, scalable applications. I help teams and founders build fast,
           reliable web solutions, crafted for smooth and meaningful user
           experiences.

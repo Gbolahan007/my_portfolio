@@ -7,46 +7,43 @@ import TechGrid from "./TechGrid";
 
 export default function HeroSection() {
   const containerRef = useRef(null);
+  const copyRef = useRef(null);
+  const gridWrapRef = useRef(null);
   const greetingRef = useRef(null);
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
   const [canAnimate, setCanAnimate] = useState(false);
 
   useEffect(() => {
-    const handleSplashComplete = () => {
-      setCanAnimate(true);
-    };
-
+    const handleSplashComplete = () => setCanAnimate(true);
     window.addEventListener("splashComplete", handleSplashComplete);
-
-    return () => {
+    return () =>
       window.removeEventListener("splashComplete", handleSplashComplete);
-    };
   }, []);
 
   useGSAP(
     () => {
       if (!canAnimate) return;
 
-      // Force GPU acceleration for all animated elements
-      gsap.set(
-        [
-          containerRef.current,
-          greetingRef.current,
-          nameRef.current,
-          descriptionRef.current,
-        ],
-        {
-          force3D: true,
-          willChange: "transform, opacity",
-        },
-      );
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
 
       gsap.set([greetingRef.current, nameRef.current, descriptionRef.current], {
+        force3D: true,
+        willChange: "transform, opacity",
         opacity: 0,
         y: 80,
         scale: 0.95,
       });
+
+      if (prefersReduced) {
+        gsap.set(
+          [greetingRef.current, nameRef.current, descriptionRef.current],
+          { opacity: 1, y: 0, scale: 1, willChange: "auto" },
+        );
+        return;
+      }
 
       const tl = gsap.timeline({
         defaults: { ease: "power4.out" },
@@ -62,13 +59,7 @@ export default function HeroSection() {
       })
         .to(
           nameRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 1.4,
-            ease: "power4.out",
-          },
+          { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: "power4.out" },
           "-=0.8",
         )
         .to(
@@ -79,62 +70,65 @@ export default function HeroSection() {
             scale: 1,
             duration: 1.2,
             ease: "power3.out",
-            // Clear willChange after animation completes
             onComplete: () => {
               gsap.set(
                 [greetingRef.current, nameRef.current, descriptionRef.current],
-                {
-                  willChange: "auto",
-                },
+                { willChange: "auto" },
               );
             },
           },
           "-=0.9",
         );
 
-      // Reduce or disable continuous animations on mobile
-      const isMobile = window.innerWidth < 768;
-
-      if (!isMobile) {
-        // Floating animation - desktop only
-        gsap.to(containerRef.current, {
-          y: -12,
-          duration: 3,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-          delay: 2,
-          force3D: true,
-        });
-
-        // Glow pulse - desktop only
-        gsap.to(nameRef.current, {
-          textShadow: "0 0 20px rgba(255,255,255,0.3)",
-          duration: 2,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-          delay: 2,
-        });
-      } else {
-        // Clear willChange on mobile after intro animation
-        setTimeout(() => {
-          gsap.set(containerRef.current, { willChange: "auto" });
-        }, 2500);
-      }
+      // Organic float for the tech grid — different periods for y vs rotation
+      const floatTl = gsap.timeline({ repeat: -1, delay: 2 });
+      floatTl
+        .to(
+          gridWrapRef.current,
+          {
+            y: -10,
+            duration: 3.2,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: 1,
+            force3D: true,
+          },
+          0,
+        )
+        .to(
+          gridWrapRef.current,
+          {
+            rotation: 0.6,
+            duration: 4.1,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: 1,
+            transformOrigin: "50% 50%",
+            force3D: true,
+          },
+          0,
+        );
     },
     { scope: containerRef, dependencies: [canAnimate] },
   );
 
   return (
-    <div className="lg:min-h-screen mb-14 pb-8 lg:my-0 bg-[#10120f] text-white px-4 relative overflow-hidden">
+    <div
+      ref={containerRef}
+      className="min-h-svh flex flex-col  bg-[#10120f] text-white px-4 relative overflow-hidden"
+      style={{
+        paddingTop: "clamp(6rem, 12vh, 9rem)",
+        paddingBottom: "clamp(2rem, 6vh, 4rem)",
+        gap: "clamp(1.5rem, 4vh, 3rem)",
+      }}
+    >
       <div
-        ref={containerRef}
-        className="max-w-5xl mx-auto text-center relative z-10 pt-32"
+        ref={copyRef}
+        className="max-w-4xl mx-auto text-center relative z-10 flex flex-col items-center p-3 md:pb-9 md:mb-12 pb-2 mb-5"
       >
         <h2
           ref={greetingRef}
-          className="text-4xl md:text-5xl font-bold mb-4"
+          className="text-4xl md:text-5xl font-bold"
           style={{ opacity: 0 }}
         >
           <span className="text-gray-500">Hi,</span>
@@ -163,7 +157,9 @@ export default function HeroSection() {
         </p>
       </div>
 
-      <TechGrid />
+      <div ref={gridWrapRef} className="relative z-10 w-full">
+        <TechGrid />
+      </div>
     </div>
   );
 }

@@ -189,7 +189,7 @@ const PortfolioSect: React.FC = () => {
                 {String(index + 1).padStart(2, "0")}.
               </h3>
 
-              <div className="mobile-image relative w-full h-[50vh] rounded-lg overflow-hidden shadow-2xl">
+              <div className="mobile-image relative w-full  h-[50vh] rounded-lg overflow-hidden shadow-2xl">
                 <Link href={item.liveLink}>
                   <Image
                     src={item.image || "/placeholder.svg"}
@@ -310,12 +310,12 @@ const PortfolioSect: React.FC = () => {
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
                 >
-                  <div className="relative w-full h-full aspect-video rounded-lg overflow-hidden shadow-2xl">
+                  <div className="relative w-full h-full aspect-video rounded-lg overflow-hidden">
                     <Image
                       src={item.image || "/placeholder.svg"}
                       alt={item.title}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                       draggable={false}
                       priority={i === 0}
                     />

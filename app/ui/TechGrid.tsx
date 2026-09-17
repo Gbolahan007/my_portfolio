@@ -110,7 +110,7 @@ export default function TechGrid() {
   }, []);
 
   return (
-    <div className="p-1">
+    <div className="p-1 ">
       <h1 ref={headingRef} className="text-center pb-2.5">
         Tech Stack :
       </h1>

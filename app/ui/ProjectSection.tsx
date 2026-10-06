@@ -51,7 +51,7 @@ const ProjectSection: React.FC = () => {
             duration: 0.8,
             ease: "power3.out",
           },
-          "-=0.6"
+          "-=0.6",
         )
         .from(
           descRef.current,
@@ -61,7 +61,7 @@ const ProjectSection: React.FC = () => {
             duration: 0.8,
             ease: "power3.out",
           },
-          "-=0.5"
+          "-=0.5",
         )
         .from(
           linkRef.current,
@@ -71,7 +71,7 @@ const ProjectSection: React.FC = () => {
             duration: 0.8,
             ease: "power3.out",
           },
-          "-=0.6"
+          "-=0.6",
         );
 
       // --- 2. Project Card Pinning/Scaling Animation ---
@@ -161,7 +161,7 @@ const ProjectSection: React.FC = () => {
             ref={descRef}
             className="text-neutral-300 text-base md:text-lg max-w-2xl mb-12 leading-relaxed"
           >
-            Previous projects that I have worked on in my 3+ years
+            Previous projects that I have worked on in my 4+ years
             <br />
             of being a front-end web developer.
           </p>

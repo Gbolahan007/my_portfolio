@@ -72,7 +72,7 @@ export default function ContactForm() {
         {
           autoAlpha: 0,
           y: 50,
-        }
+        },
       );
 
       gsap.set(formElementsRef.current, { autoAlpha: 0, y: 50 });
@@ -104,7 +104,7 @@ export default function ContactForm() {
           ease: "power2.out",
           stagger: 0.1,
         },
-        "-=0.4"
+        "-=0.4",
       );
       tl.to(
         contactInfoRef.current,
@@ -115,7 +115,7 @@ export default function ContactForm() {
           ease: "power2.out",
           stagger: 0.1,
         },
-        "<"
+        "<",
       );
     }, containerRef);
 
@@ -182,7 +182,7 @@ export default function ContactForm() {
             {/* LinkedIn Link */}
             <a
               ref={addContactInfo}
-              href="https://www.linkedin.com/in/yourprofile"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-4 hover:opacity-70 transition-opacity"
